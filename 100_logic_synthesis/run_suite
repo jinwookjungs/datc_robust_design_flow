@@ -1,0 +1,61 @@
+#!/bin/bash
+# possible calls: run_suite [my_suite|tau|test]
+
+source ../000_config/setup.sh $1
+
+
+echo ""
+echo "================================================================================"
+echo "            __             _       ____          __  __           _   "
+echo "           / /  ___  ___ _(_)___  / __/_ _____  / /_/ /  ___ ___ (_)__"
+echo "          / /__/ _ \/ _ \/ / __/ _\ \/ // / _ \/ __/ _ \/ -_|_-</ (_-<"
+echo "         /____/\___/\_, /_/\__/ /___/\_, /_//_/\__/_//_/\__/___/_/___/"
+echo "                   /___/            /___/                             "
+echo ""
+echo "================================================================================"
+echo ""
+
+mkdir -p reports
+mkdir -p rundata
+
+echo $0: Specified ${#these_benches[@]} benchmarks
+
+for benchkey in "${these_benches[@]}"
+do
+    if grep -qe "$benchkey" <(echo "${!bench_set[@]}"); then 
+        echo "  " [$benchkey]=${bench_set[$benchkey]}
+    else
+        echo "warning: benchmark $benchkey does not exist"
+    fi
+done
+
+echo $0: Specified ${#these_scenarios[@]} scenarios 
+for scenkey in "${these_scenarios[@]}"
+do
+    echo "  " [$scenkey]=${scenario_set[$scenkey]}
+done
+
+if [ -z ${max_fanout+x} ]; then 
+    max_fanout=8
+fi
+echo "max_fanout is set to $max_fanout"; 
+
+#"${!bench_set[@]}"
+for benchkey in "${these_benches[@]}"
+do
+    echo $0: Runnning suite $benchkey
+    if grep -qe "$benchkey" <(echo "${!bench_set[@]}"); then 
+        for scenkey  in "${these_scenarios[@]}"
+        do
+            echo scenario : $scenkey
+            parms=${bench_set[$benchkey]}
+            scenario=${scenario_set[$scenkey]}
+            echo $0: Running scenario: $scenkey : $scenario;
+            ./run_abc_synthesis.sh $benchkey $parms $scenkey $scenario $max_fanout \
+                | tee reports/${benchkey}_${scenkey}.log.txt
+        done
+    else
+        echo "Benchmark $benchkey is not listed"
+    fi
+done
+

@@ -1,0 +1,98 @@
+#!/bin/bash
+# possible calls: run_suite [my_suite|tau|test]
+
+source ../000_config/setup.sh $1
+
+
+ICCAD_PARM='ICCAD15.parm'
+
+for bench in "${these_benches[@]}"
+do
+    early_lib_name="${bench}_Early.lib"
+    late_lib_name="${bench}_Late.lib"
+    lef_name="${bench}.lef"
+
+    early_lib="${bench_dir}/${bench}/${early_lib_name}"
+    late_lib="${bench_dir}/${bench}/${late_lib_name}"
+    lef="${bench_dir}/${bench}/${lef_name}"
+    sdc=${bench_dir}/${bench}/${bench}.sdc
+
+	for scenario in "${these_scenarios[@]}"
+	do
+        for placer in "${these_placers[@]}"
+        do
+            for timer in "${these_timers[@]}"
+            do
+                base_name=${bench}.${scenario}.${placer}
+                out_dir="timing/${bench}.${scenario}.${placer}"
+
+                if [ -d ${out_dir} ]; then
+                    rm -rf ${out_dir}
+                fi
+                mkdir -p ${out_dir}/out
+
+                # library
+                ln -s $early_lib ${out_dir}/$early_lib_name
+                ln -s $late_lib ${out_dir}/$late_lib_name
+                ln -s $lef ${out_dir}/$lef_name
+
+                # Design
+                final_verilog="${final_verilog_dir}/${bench}.${scenario}/${bench}.v"
+                def="${write_def_dir}/${bench}.${scenario}.${placer}/${bench}.def"
+       
+                # Path
+                echo $final_verilog
+                ln -s ${final_verilog} ${out_dir}/${bench}.v
+                ln -s ${def} ${out_dir}/${bench}.def
+                ln -s ${sdc} ${out_dir}/${bench}.sdc
+
+                # Create iccad file
+                iccad_file=${out_dir}/${bench}.iccad
+                echo "${bench}.v ${bench}.def ${bench}.sdc $early_lib_name $late_lib_name $lef_name" \
+                > $iccad_file
+
+                # Run ICCAD'15 evaluator to generate spef and ops
+                cmd="./iccad2015_evaluate_solution $ICCAD_PARM $iccad_file $utilization"
+                echo $cmd
+                $cmd | tee ${base_name}.log.txt
+
+                if test "$timer" = "iTimerC2.0"; then
+                    echo "`ls *.tau2015` `ls *.timing` `ls *.late.ops` ${bench}.itimer.late.rpt" \
+                         > ${bench}.args.late.txt
+                    ../bin/iTimerC2.0.2 `cat ${bench}.args.late.txt`
+                    echo "`ls *.tau2015` `ls *.timing` `ls *.early.ops` ${bench}.itimer.early.rpt" \
+                         > ${bench}.args.early.txt
+                    ../bin/iTimerC2.0.2 `cat ${bench}.args.early.txt`
+
+                    echo "iTimerC2.0 Report:" | tee --append ${base_name}.log.txt
+                    echo "    Late WNS: `tail ${bench}.itimer.late.rpt --lines 2 | head --lines 1`" | tee --append ${base_name}.log.txt
+                    echo "    Late TNS: `tail ${bench}.itimer.late.rpt --lines 1`" | tee --append ${base_name}.log.txt
+                    echo "--------------------------------------------------------------------------------" | tee --append ${base_name}.log.txt
+                    mkdir itimer; mv ${bench}*rpt itimer; mv itimer ${out_dir}/out
+                fi
+                # Move output files
+                rm -f uitimer.tr
+    
+    #            gnuplot ${bench}_critical.plt
+                gnuplot ${bench}_grid.plt
+                mv *.png ${out_dir}/out
+    
+                mv ${base_name}.log.txt ${out_dir}/out
+                mv ${bench}_critical.log ${out_dir}/out
+                mv ${bench}_critical.plt ${out_dir}/out
+                mv *.spef ${out_dir}/out/${bench}.spef
+                mv *.tau2015 ${out_dir}/out/${bench}.tau2015
+                mv *.timing ${out_dir}/out/${bench}.timing
+                mv *.ops ${out_dir}/out/
+                mv ${bench}_grid.plt ${out_dir}/out
+                if [ -f check_legality.log ]; then
+                    mv check_legality.log ${out_dir}/out
+                fi
+                mv ${bench}* ${out_dir}/out
+
+                echo ""
+            done
+        done
+	done
+done
+

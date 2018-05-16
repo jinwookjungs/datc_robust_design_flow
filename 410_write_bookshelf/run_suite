@@ -1,0 +1,70 @@
+#!/bin/bash
+# possible calls: run_suite [my_suite|tau|test]
+
+source ../000_config/setup.sh $1
+
+
+if test $run_gs = false ; then
+    echo "(I) Gate sizing is turned off."
+    exit
+fi
+
+for bench in "${these_benches[@]}"
+do
+	for scenario in "${these_scenarios[@]}"
+	do
+        for placer in "${these_placers[@]}"
+        do
+            for sizer in "${these_sizers[@]}"
+            do
+                # Create output directory
+                out_dir="bookshelf/${bench}.${scenario}.${placer}.${sizer}"
+                if [ -d "$out_dir" ]; then
+                    rm -rf $out_dir
+                fi
+                mkdir $out_dir
+
+                # ABC output verilog file
+                final_verilog="${final_verilog_dir}/${bench}.${scenario}/${bench}.v"
+
+                # Check whether tie cells exist
+                cmd="python3 ../utils/400_check_tie_cells.py -i ${final_verilog}"
+                echo $cmd; $cmd
+
+                if [ $? -eq 1 ]; then
+                    echo "(W) USizer doesn't support Verilog netlist including tie cell(s)."
+                    echo "(W) Creating a link to the original bookshelf nodes."
+                    echo ""
+                    ln -s ${floorplan_dir}/${bench}.${scenario}/${bench}.nodes ${out_dir}
+                else
+                    input_bookshelf_nodes=${floorplan_dir}/${bench}.${scenario}/${bench}.nodes
+                    sizing_output_dir=${sizing_dir}/${bench}.${scenario}.${placer}.${sizer}
+                    sizing_output_verilog=${sizing_output_dir}/${bench}_sizing.v
+                    lef=${bench_dir}/${bench}/${bench}.lef
+
+                    output_bookshelf_nodes=${bench}.${scenario}.${placer}.${sizer}.nodes
+                    cmd="python3 ../utils/410_create_bookshelf_nodes_after_sizing.py"
+                    cmd="$cmd --bs_nodes ${input_bookshelf_nodes}"
+                    cmd="$cmd --verilog ${sizing_output_verilog}"
+                    cmd="$cmd --lef ${lef}"
+                    cmd="$cmd -o ${bench}.nodes"
+
+                    echo $cmd
+                    $cmd | tee ${bench}.log.txt
+
+                    mv ${bench}.nodes $out_dir
+                    mv ${bench}.log.txt $out_dir
+                fi
+
+                # Original bookshelf files
+                ln -s ${floorplan_dir}/${bench}.${scenario}/${bench}.nets ${out_dir}
+                ln -s ${floorplan_dir}/${bench}.${scenario}/${bench}.wts  ${out_dir}
+                ln -s ${floorplan_dir}/${bench}.${scenario}/${bench}.scl ${out_dir}
+                ln -s ${floorplan_dir}/${bench}.${scenario}/${bench}.shapes ${out_dir}
+                ln -s ${floorplan_dir}/${bench}.${scenario}/${bench}.aux  ${out_dir}
+                ln -s ${placement_dir}/${bench}.${scenario}.${placer}/${bench}.${placer}.solution.pl ${out_dir}/${bench}.pl
+            done
+        done
+    done
+done
+

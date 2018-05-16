@@ -1,0 +1,89 @@
+#!/bin/bash
+# possible calls: run_suite [my_suite|tau|test]
+
+source ../000_config/setup.sh $1
+
+
+echo ""
+echo "================================================================================"
+echo "          _______     __        __  ___            __  _          "
+echo "         / ___/ /__  / /  ___ _/ / / _ \___  __ __/ /_(_)__  ___ _"
+echo "        / (_ / / _ \/ _ \/ _ \`/ / / , _/ _ \/ // / __/ / _ \/ _ \`/"
+echo "        \___/_/\___/_.__/\_,_/_/ /_/|_|\___/\_,_/\__/_/_//_/\_, / "
+echo "                                                           /___/  "
+echo "================================================================================"
+echo ""
+
+mode="3"
+
+for bench in "${these_benches[@]}"
+do
+	for scenario in "${these_scenarios[@]}"
+	do
+        for placer in "${these_placers[@]}"
+        do
+            for sizer in "${these_sizers[@]}"
+            do
+                # Solution pl name
+                if test $placer = "Capo"; then
+                    solution_pl="${bench}_Capo.pl"
+                elif test $placer = "NTUPlace3"; then
+                    solution_pl="${bench}.ntup.pl"
+                elif test $placer = "ComPLx"; then
+                    solution_pl="${bench}_FP_dp.pl"
+                elif test $placer = "FastPlaceGP"; then
+                    solution_pl="${bench}_FP_dp.pl"
+                elif test $placer = "mPL6"; then
+                    solution_pl="${bench}-mPL.pl"
+                elif test $placer = "mPL5"; then
+                    solution_pl="${bench}-mPL.pl"
+                else
+                    echo "Invalid placer."
+                    exit
+                fi
+
+                out_name=${bench}.${scenario}.${placer}
+
+                if test $run_gs = false; then
+                    out_name=${bench}.${scenario}.${placer}
+                    bookshelf_dir=${floorplan_dir}/${bench}.${scenario}
+                    bookshelf_pl="${placement_dir}/${out_name}/${solution_pl}"
+                else
+                    out_name=${bench}.${scenario}.${placer}.${sizer}
+                    bookshelf_dir=${sizer_bookshelf_dir}/${out_name}
+                    bookshelf_pl="${sizer_legalization_dir}/${out_name}.FastPlace/${bench}_FP_dp.pl"
+                fi
+
+                echo "Run: gen_routing_benchmark.pl"
+                echo "Output: ${bench}.gr"
+                echo "Log: ${bench}.log.txt"
+                echo "Placement file: $bookshelf_pl"
+
+                perl ../utils/500_gen_routing_benchmark.pl \
+                    ${bookshelf_dir}/${bench}.nodes \
+                    ${bookshelf_pl} \
+                    ${bookshelf_dir}/${bench}.nets \
+                    ${bookshelf_dir}/${bench}.scl ${bench}.gr \
+                    $tile_size $adjustment $safety $mode $num_layer \
+                    | tee ${bench}.log.txt
+
+                # generarte bookshelf .route file
+                cmd="../utils/500_gen_bookshelf_route.tcl ${bench}.gr ${bookshelf_dir}/${bench}.nodes"
+                echo $cmd
+                $cmd | tee ${bench}.log.txt
+
+                out_dir="gr_bench/$out_name"
+                if [ -d $out_dir ]; then
+                    rm -rf $out_dir
+                fi
+
+                mkdir -p ${out_dir}
+                mv ${bench}* ${out_dir}
+
+                echo "Done."
+                echo ""
+                echo ""
+            done
+        done
+    done
+done

@@ -1,0 +1,107 @@
+#!/bin/bash
+# possible calls: run_suite [my_suite|tau|test]
+
+source ../000_config/setup.sh $1
+
+
+for bench in "${these_benches[@]}"
+do
+	for scenario in "${these_scenarios[@]}"
+	do
+        for placer in "${these_placers[@]}"
+        do
+            for sizer in "${these_sizers[@]}"
+            do
+                for grouter in "${these_grouters[@]}"
+                do
+                    if test $run_gs = false; then
+                        base_name=${bench}.${scenario}.${placer}
+                        out_name=${base_name}.${grouter}
+                    else
+                        base_name=${bench}.${scenario}.${placer}.${sizer}
+                        out_name=${base_name}.${grouter}
+                    fi
+
+                    log_name=${bench}.gr.log.txt
+
+                    gr_bench_file=${gr_bench_dir}/${base_name}/${bench}.gr
+                    # Do global route
+                    cmd="./run_groute.sh ${gr_bench_file} $grouter ${out_name}"
+                    echo "Running: $cmd" | tee ${log_name}
+                    $cmd | tee --append ${log_name}
+                    echo "" | tee --append ${log_name}
+                    echo "Done." | tee --append ${log_name}
+
+                    # Evaluate
+                    cmd="../utils/510_eval2008.pl ${gr_bench_file} ${out_name}"
+                    echo "Evaluate the solution." | tee --append ${log_name}
+                    echo "$cmd"
+                    $cmd | tee --append ${log_name}
+                    echo "Done." | tee --append ${log_name}
+                    echo "" | tee --append ${log_name}
+
+                    # DAC2012 bookshelf format for plot generation
+                    if test $run_gs = false; then
+                        # Solution pl name
+                        if test $placer = "Capo"; then
+                            solution_pl="${bench}_Capo.pl"
+                        elif test $placer = "NTUPlace3"; then
+                            solution_pl="${bench}.ntup.pl"
+                        elif test $placer = "ComPLx"; then
+                            solution_pl="${bench}_FP_dp.pl"
+                        elif test $placer = "FastPlaceGP"; then
+                            solution_pl="${bench}_FP_dp.pl"
+                        elif test $placer = "mPL6"; then
+                            solution_pl="${bench}-mPL.pl"
+                        elif test $placer = "mPL5"; then
+                            solution_pl="${bench}-mPL.pl"
+                        else
+                            echo "Invalid placer."
+                            exit
+                        fi
+                        bookshelf_dir=${floorplan_dir}/${bench}.${scenario}
+                        bookshelf_pl="${placement_dir}/${bench}.${scenario}.${placer}/${solution_pl}"
+                    else
+                        bookshelf_dir=${sizer_bookshelf_dir}/${bench}.${scenario}.${placer}.${sizer}
+                        bookshelf_pl="${sizer_legalization_dir}/${bench}.${scenario}.${placer}.${sizer}.FastPlace/${bench}_FP_dp.pl"
+                    fi
+                    
+                    bookshelf_out_dir="bookshelf_${bench}"
+                    mkdir ${bookshelf_out_dir}
+                    cp ${bookshelf_dir}/${bench}.aux ${bookshelf_out_dir}/
+                    ln -s ${bookshelf_dir}/${bench}.nodes ${bookshelf_out_dir}
+                    ln -s ${bookshelf_dir}/${bench}.nets ${bookshelf_out_dir}
+                    ln -s ${bookshelf_dir}/${bench}.wts ${bookshelf_out_dir}
+                    ln -s ${bookshelf_dir}/${bench}.scl ${bookshelf_out_dir}
+                    ln -s ${bookshelf_dir}/${bench}.shapes ${bookshelf_out_dir}
+                    ln -s ${bookshelf_pl} ${bookshelf_out_dir}/${bench}.pl
+
+                    ../utils/500_gen_bookshelf_route.tcl ${gr_bench_file} ${bookshelf_out_dir}/${bench}.nodes
+                    echo `cat ${bookshelf_out_dir}/${bench}.aux` "${bench}.route" > ${bookshelf_out_dir}/${bench}.aux
+     
+                    # Plotting
+                    solution_pl=${place_dir}/${base_name}
+                    cmd="../utils/510_dac2012_evaluate_solution.pl -p ${bookshelf_out_dir}/${bench}.aux ${bookshelf_out_dir}/${bench}.pl $out_name"
+                    echo "Running: $cmd"
+                    $cmd | tee ${out_name}.dac2012_eval
+                    echo ""
+                    echo "Done."
+
+                    for f in *.plt
+                    do
+                        gnuplot $f; gzip $f
+                    done
+
+                    # Output directory
+                    out_dir="global_route/${out_name}"
+                    if [ -d $out_dir ]; then
+                        rm -rf $out_dir
+                    fi
+                    mkdir ${out_dir}
+                    mv ${bench}* ${out_dir}
+                    mv bookshelf_${bench}* ${out_dir}
+                done
+            done
+        done
+    done
+done

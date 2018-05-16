@@ -1,0 +1,195 @@
+clock clk 7200 50
+at beta_11 0 0 0 0
+at beta_24 0 0 0 0
+at beta_8 0 0 0 0
+at beta_5 0 0 0 0
+at beta_25 0 0 0 0
+at beta_22 0 0 0 0
+at beta_30 0 0 0 0
+at beta_6 0 0 0 0
+at beta_27 0 0 0 0
+at beta_3 0 0 0 0
+at beta_13 0 0 0 0
+at beta_29 0 0 0 0
+at beta_12 0 0 0 0
+at beta_15 0 0 0 0
+at beta_20 0 0 0 0
+at beta_21 0 0 0 0
+at beta_28 0 0 0 0
+at beta_1 0 0 0 0
+at beta_2 0 0 0 0
+at beta_9 0 0 0 0
+at beta_7 0 0 0 0
+at rst 0 0 0 0
+at beta_16 0 0 0 0
+at beta_18 0 0 0 0
+at beta_0 0 0 0 0
+at beta_19 0 0 0 0
+at beta_14 0 0 0 0
+at beta_10 0 0 0 0
+at beta_31 0 0 0 0
+at beta_17 0 0 0 0
+at beta_23 0 0 0 0
+at beta_4 0 0 0 0
+at beta_26 0 0 0 0
+slew beta_11 0 0 0 0
+slew beta_24 0 0 0 0
+slew beta_8 0 0 0 0
+slew beta_5 0 0 0 0
+slew beta_25 0 0 0 0
+slew beta_22 0 0 0 0
+slew beta_30 0 0 0 0
+slew beta_6 0 0 0 0
+slew beta_27 0 0 0 0
+slew beta_3 0 0 0 0
+slew beta_13 0 0 0 0
+slew beta_29 0 0 0 0
+slew beta_12 0 0 0 0
+slew beta_15 0 0 0 0
+slew beta_20 0 0 0 0
+slew beta_21 0 0 0 0
+slew beta_28 0 0 0 0
+slew beta_1 0 0 0 0
+slew beta_2 0 0 0 0
+slew beta_9 0 0 0 0
+slew beta_7 0 0 0 0
+slew rst 0 0 0 0
+slew beta_16 0 0 0 0
+slew beta_18 0 0 0 0
+slew beta_0 0 0 0 0
+slew beta_19 0 0 0 0
+slew beta_14 0 0 0 0
+slew beta_10 0 0 0 0
+slew beta_31 0 0 0 0
+slew beta_17 0 0 0 0
+slew beta_23 0 0 0 0
+slew beta_4 0 0 0 0
+slew beta_26 0 0 0 0
+rat cos_out_2 0 0 0 0
+rat cos_out_13 0 0 0 0
+rat sin_out_2 0 0 0 0
+rat sin_out_17 0 0 0 0
+rat sin_out_21 0 0 0 0
+rat sin_out_8 0 0 0 0
+rat sin_out_19 0 0 0 0
+rat cos_out_30 0 0 0 0
+rat cos_out_28 0 0 0 0
+rat sin_out_20 0 0 0 0
+rat cos_out_10 0 0 0 0
+rat cos_out_17 0 0 0 0
+rat cos_out_18 0 0 0 0
+rat sin_out_16 0 0 0 0
+rat cos_out_7 0 0 0 0
+rat cos_out_11 0 0 0 0
+rat sin_out_29 0 0 0 0
+rat sin_out_9 0 0 0 0
+rat sin_out_3 0 0 0 0
+rat cos_out_4 0 0 0 0
+rat sin_out_27 0 0 0 0
+rat cos_out_12 0 0 0 0
+rat cos_out_15 0 0 0 0
+rat cos_out_19 0 0 0 0
+rat sin_out_22 0 0 0 0
+rat sin_out_7 0 0 0 0
+rat cos_out_23 0 0 0 0
+rat sin_out_31 0 0 0 0
+rat sin_out_14 0 0 0 0
+rat cos_out_26 0 0 0 0
+rat cos_out_14 0 0 0 0
+rat sin_out_23 0 0 0 0
+rat sin_out_5 0 0 0 0
+rat cos_out_25 0 0 0 0
+rat sin_out_1 0 0 0 0
+rat cos_out_1 0 0 0 0
+rat cos_out_9 0 0 0 0
+rat sin_out_24 0 0 0 0
+rat cos_out_20 0 0 0 0
+rat sin_out_30 0 0 0 0
+rat sin_out_26 0 0 0 0
+rat cos_out_0 0 0 0 0
+rat sin_out_15 0 0 0 0
+rat sin_out_28 0 0 0 0
+rat sin_out_10 0 0 0 0
+rat sin_out_13 0 0 0 0
+rat cos_out_31 0 0 0 0
+rat sin_out_0 0 0 0 0
+rat cos_out_29 0 0 0 0
+rat cos_out_3 0 0 0 0
+rat cos_out_21 0 0 0 0
+rat cos_out_6 0 0 0 0
+rat cos_out_16 0 0 0 0
+rat sin_out_11 0 0 0 0
+rat cos_out_24 0 0 0 0
+rat sin_out_4 0 0 0 0
+rat sin_out_25 0 0 0 0
+rat sin_out_18 0 0 0 0
+rat sin_out_12 0 0 0 0
+rat cos_out_27 0 0 0 0
+rat cos_out_5 0 0 0 0
+rat cos_out_8 0 0 0 0
+rat cos_out_22 0 0 0 0
+rat sin_out_6 0 0 0 0
+load cos_out_2 4.0
+load cos_out_13 4.0
+load sin_out_2 4.0
+load sin_out_17 4.0
+load sin_out_21 4.0
+load sin_out_8 4.0
+load sin_out_19 4.0
+load cos_out_30 4.0
+load cos_out_28 4.0
+load sin_out_20 4.0
+load cos_out_10 4.0
+load cos_out_17 4.0
+load cos_out_18 4.0
+load sin_out_16 4.0
+load cos_out_7 4.0
+load cos_out_11 4.0
+load sin_out_29 4.0
+load sin_out_9 4.0
+load sin_out_3 4.0
+load cos_out_4 4.0
+load sin_out_27 4.0
+load cos_out_12 4.0
+load cos_out_15 4.0
+load cos_out_19 4.0
+load sin_out_22 4.0
+load sin_out_7 4.0
+load cos_out_23 4.0
+load sin_out_31 4.0
+load sin_out_14 4.0
+load cos_out_26 4.0
+load cos_out_14 4.0
+load sin_out_23 4.0
+load sin_out_5 4.0
+load cos_out_25 4.0
+load sin_out_1 4.0
+load cos_out_1 4.0
+load cos_out_9 4.0
+load sin_out_24 4.0
+load cos_out_20 4.0
+load sin_out_30 4.0
+load sin_out_26 4.0
+load cos_out_0 4.0
+load sin_out_15 4.0
+load sin_out_28 4.0
+load sin_out_10 4.0
+load sin_out_13 4.0
+load cos_out_31 4.0
+load sin_out_0 4.0
+load cos_out_29 4.0
+load cos_out_3 4.0
+load cos_out_21 4.0
+load cos_out_6 4.0
+load cos_out_16 4.0
+load sin_out_11 4.0
+load cos_out_24 4.0
+load sin_out_4 4.0
+load sin_out_25 4.0
+load sin_out_18 4.0
+load sin_out_12 4.0
+load cos_out_27 4.0
+load cos_out_5 4.0
+load cos_out_8 4.0
+load cos_out_22 4.0
+load sin_out_6 4.0

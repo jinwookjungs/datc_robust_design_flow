@@ -1,0 +1,38 @@
+#!/bin/bash
+# possible calls: run_suite [my_suite|tau|test]
+
+source ../000_config/setup.sh $1
+
+mkdir -p def
+for bench in "${these_benches[@]}"
+do
+    lef="${bench_dir}/${bench}/${bench}.lef"
+
+	for scenario in "${these_scenarios[@]}"
+	do
+        final_verilog="${final_verilog_dir}/${bench}.${scenario}/${bench}.v"
+        aux="${floorplan_dir}/${bench}.${scenario}/${bench}.aux"
+        out_def=${bench}.def
+
+        echo "Creating DEF file from ${aux}"
+        echo "--------------------------------------------------------------------------------"
+        cmd="python3 ../utils/210_convert_bookshelf_to_def.py"
+        cmd="$cmd --aux ${aux} --lef ${lef} --verilog ${final_verilog}"
+        cmd="$cmd --out_def ${out_def}"
+
+        echo $cmd
+        $cmd | tee ${bench}.log.txt
+
+        out_dir="def/${bench}.${scenario}"
+        if [ -d $out_dir ]; then
+            rm -rf $out_dir
+        fi
+
+        mkdir -p ${out_dir}
+        mv ${bench}* ${out_dir}
+
+        echo ""
+        echo ""
+	done
+done
+

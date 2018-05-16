@@ -1,0 +1,36 @@
+#!/bin/bash
+# possible calls: run_suite [my_suite|tau|test]
+
+source ../000_config/setup.sh $1
+
+
+for bench in "${these_benches[@]}"
+do
+	for scenario in "${these_scenarios[@]}"
+	do
+        synth_result="${logic_synth_dir}/${bench}.${scenario}/${bench}.v"
+        final_verilog="${bench}.v"
+
+        echo "Input : ${synth_result}"
+        echo "Output: verilog/${bench}.${scenario}/${final_verilog}"
+        echo "--------------------------------------------------------------------------------"
+        cmd="python3 ../utils/verilog_parser.py -i ${synth_result}"
+        cmd="$cmd -o ${final_verilog} --clock_port $clock_name"
+        echo $cmd
+        $cmd | tee ${bench}.log.txt
+
+        out_dir="${final_verilog_dir}/${bench}.${scenario}"
+
+        echo "" | tee --append ${bench}.log.txt
+        echo "" | tee --append ${bench}.log.txt
+
+        if [ -d $out_dir ]; then
+            rm -rf $out_dir
+        fi
+
+        mkdir -p ${out_dir}
+        mv ${final_verilog} ${out_dir}
+        mv ${bench}.log.txt ${out_dir}
+	done
+done
+
