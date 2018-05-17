@@ -1,0 +1,296 @@
+Output will be save in ./synthesis/cordic_ispd.timing/cordic_ispd.v
+***********************************************
+ABC scenario : "timing map"
+
+1. Verilog to blif conversion
+------------------------------------------------------------------------------
+timing assertions : ../benchmarks/cordic_ispd/cordic_ispd.timing
+python3 ../utils/100_verilog_to_blif.py -i ../benchmarks/cordic_ispd/cordic_ispd.v -t ../benchmarks/cordic_ispd/cordic_ispd.timing -o ./rundata/cordic_ispd_timing.blif
+Provided design:  ../benchmarks/cordic_ispd/cordic_ispd.v
+Provided timing assertions: ../benchmarks/cordic_ispd/cordic_ispd.timing
+Generated output: ./rundata/cordic_ispd_timing.blif
+
+2. ABC design synthesis - cordic_ispd
+------------------------------------------------------------------------------
+ABC command line: "
+source ../bin/abc.rc;
+echo Reading library ../benchmarks/cordic_ispd/cordic_ispd_Late.lib ***;
+read ../benchmarks/cordic_ispd/cordic_ispd_Late.lib;
+echo Reading abstracted netlist ./rundata/cordic_ispd_timing.blif ***;
+read ./rundata/cordic_ispd_timing.blif;
+echo print_stats; print_stats;
+echo print_latch; print_latch;
+echo print_gates; print_gates;
+echo print_fanio; print_fanio;
+echo print_delay; print_delay;
+unmap;
+timing;
+map;
+cleanup;
+echo -n map:timing:; print_stats;
+echo Buffering ... ;
+buffer -N 16 -v;
+echo -n buffer:timing:; 
+echo print_stats; print_stats;
+echo print_latch; print_latch;
+echo print_gates; print_gates;
+echo print_fanio; print_fanio;
+echo print_delay; print_delay;
+echo Saving out ./rundata/cordic_ispd_timing.v ***;
+write_verilog ./rundata/cordic_ispd_timing.v
+".
+
+Loading resource file "../bin/abc.rc".
+Reading library ../benchmarks/cordic_ispd/cordic_ispd_Late.lib *** 
+Library "OpenDesign_Flow_Database_Late" from "../benchmarks/cordic_ispd/cordic_ispd_Late.lib" has 362 cells (3 skipped: 3 seq; 0 tri-state; 0 no func).  Time =     0.07 sec
+Reading abstracted netlist ./rundata/cordic_ispd_timing.blif *** 
+Line 8: Skipping line ".default_input_arrival 0 0".
+Line 9: Skipping line ".default_output_required 7200 7200".
+print_stats 
+[1;37mcordic_ispd                   :[0m i/o =   34/   64  lat = 1230  nd = 43794  edge =  87647  area =87647.00  delay =81.00  lev = 81
+print_latch 
+Total latches =  1230. Init0 = 0. Init1 = 0. InitDC = 1230. Const data = 0.
+print_gates 
+ao12f01   Fanin =  3   Instance =     3358   Area =   10074.00    11.49 %          0         0   !(a|b&c)
+ao22f01   Fanin =  4   Instance =      118   Area =     472.00     0.54 %          0         0   !(a&b|c&d)
+bf01f01   Fanin =  1   Instance =       11   Area =      11.00     0.01 %          0         0   a
+in01f01   Fanin =  1   Instance =    10615   Area =   10615.00    12.11 %          0         0   !a
+na02f01   Fanin =  2   Instance =     6847   Area =   13694.00    15.62 %          0         0   !a+!b
+na03f01   Fanin =  3   Instance =     1508   Area =    4524.00     5.16 %          0         0   !a+!b+!c
+na04f01   Fanin =  4   Instance =      162   Area =     648.00     0.74 %          0         0   !a+!b+!c+!d
+no02f01   Fanin =  2   Instance =    16246   Area =   32492.00    37.07 %          0         0   !a&!b
+no03f01   Fanin =  3   Instance =     2142   Area =    6426.00     7.33 %          0         0   !a&!b&!c
+no04f01   Fanin =  4   Instance =      199   Area =     796.00     0.91 %          0         0   !a&!b&!c&!d
+oa12f01   Fanin =  3   Instance =     2457   Area =    7371.00     8.41 %          0         0   !(a&(b|c))
+oa22f01   Fanin =  4   Instance =      131   Area =     524.00     0.60 %          0         0   !((a|b)&(c|d))
+TOTAL                  Instance =    43794   Area =   87647.00   100.00 %   AbsDiff = 0
+print_fanio 
+The distribution of fanins and fanouts in the network:
+         Number   Nodes with fanin  Nodes with fanout
+              1 :        10626             19908  
+              2 :        23093             16298  
+              3 :         9465              5195  
+              4 :          610              1383  
+              5 :                            538  
+              6 :                            180  
+              7 :                             74  
+              8 :                             19  
+              9 :                              7  
+        10 - 19 :                             47  
+        20 - 29 :                             44  
+        30 - 39 :                             33  
+        40 - 49 :                             27  
+        50 - 59 :                             12  
+        60 - 69 :                              4  
+        70 - 79 :                              7  
+        80 - 89 :                              3  
+        90 - 99 :                              2  
+      100 - 199 :                             13  
+Fanins: Max = 4. Ave = 2.00.  Fanouts: Max = 117. Ave =  1.95.
+print_delay 
+Critical path from PI "delay_xor_ln22_unr6_stage3_stallmux_q_0_" to PO "n6102_1":
+Level   0 : Primary input "delay_xor_ln22_unr6_stage3_stallmux_q_0_".   Arrival time =   0.0. 
+Level   1 :     n19123/a    (in01f01)   Arrival =   1.0.   I/O times: (0.0 -> 1.0)
+Level   2 :     n19124/b    (na02f01)   Arrival =   2.0.   I/O times: (0.0, 1.0 -> 2.0)
+Level   3 :     n19125/a    (na02f01)   Arrival =   3.0.   I/O times: (2.0, 2.0 -> 3.0)
+Level   4 :     n19126/a    (no02f01)   Arrival =   4.0.   I/O times: (3.0, 2.0 -> 4.0)
+Level   5 :     n19131/b    (na02f01)   Arrival =   5.0.   I/O times: (3.0, 4.0 -> 5.0)
+Level   6 :     n19132/a    (in01f01)   Arrival =   6.0.   I/O times: (5.0 -> 6.0)
+Level   7 :     n19137/b    (na02f01)   Arrival =   7.0.   I/O times: (3.0, 6.0 -> 7.0)
+Level   8 :     n19139/b    (no02f01)   Arrival =   8.0.   I/O times: (2.0, 7.0 -> 8.0)
+Level   9 :     n19140/a    (in01f01)   Arrival =   9.0.   I/O times: (8.0 -> 9.0)
+Level  10 :     n19142/b    (no02f01)   Arrival =  10.0.   I/O times: (2.0, 9.0 -> 10.0)
+Level  11 :     n19143/a    (in01f01)   Arrival =  11.0.   I/O times: (10.0 -> 11.0)
+Level  12 :     n19145/b    (no02f01)   Arrival =  12.0.   I/O times: (2.0, 11.0 -> 12.0)
+Level  13 :     n19146/a    (in01f01)   Arrival =  13.0.   I/O times: (12.0 -> 13.0)
+Level  14 :     n19148/b    (no02f01)   Arrival =  14.0.   I/O times: (2.0, 13.0 -> 14.0)
+Level  15 :     n19149/a    (in01f01)   Arrival =  15.0.   I/O times: (14.0 -> 15.0)
+Level  16 :     n19151/b    (no02f01)   Arrival =  16.0.   I/O times: (2.0, 15.0 -> 16.0)
+Level  17 :     n19152/a    (in01f01)   Arrival =  17.0.   I/O times: (16.0 -> 17.0)
+Level  18 :     n19154/b    (no02f01)   Arrival =  18.0.   I/O times: (2.0, 17.0 -> 18.0)
+Level  19 :     n19155/a    (in01f01)   Arrival =  19.0.   I/O times: (18.0 -> 19.0)
+Level  20 :     n19157/b    (no02f01)   Arrival =  20.0.   I/O times: (2.0, 19.0 -> 20.0)
+Level  21 :     n19158/a    (in01f01)   Arrival =  21.0.   I/O times: (20.0 -> 21.0)
+Level  22 :     n19160/b    (no02f01)   Arrival =  22.0.   I/O times: (2.0, 21.0 -> 22.0)
+Level  23 :     n19161/a    (in01f01)   Arrival =  23.0.   I/O times: (22.0 -> 23.0)
+Level  24 :     n19163/b    (no02f01)   Arrival =  24.0.   I/O times: (2.0, 23.0 -> 24.0)
+Level  25 :     n19164/a    (in01f01)   Arrival =  25.0.   I/O times: (24.0 -> 25.0)
+Level  26 :     n19166/b    (no02f01)   Arrival =  26.0.   I/O times: (2.0, 25.0 -> 26.0)
+Level  27 :     n19167/a    (in01f01)   Arrival =  27.0.   I/O times: (26.0 -> 27.0)
+Level  28 :     n19169/b    (no02f01)   Arrival =  28.0.   I/O times: (2.0, 27.0 -> 28.0)
+Level  29 :     n19170/a    (in01f01)   Arrival =  29.0.   I/O times: (28.0 -> 29.0)
+Level  30 :     n19172/b    (no02f01)   Arrival =  30.0.   I/O times: (2.0, 29.0 -> 30.0)
+Level  31 :     n19173/a    (in01f01)   Arrival =  31.0.   I/O times: (30.0 -> 31.0)
+Level  32 :     n19175/b    (no02f01)   Arrival =  32.0.   I/O times: (2.0, 31.0 -> 32.0)
+Level  33 :     n19176/a    (in01f01)   Arrival =  33.0.   I/O times: (32.0 -> 33.0)
+Level  34 :     n19178/b    (no02f01)   Arrival =  34.0.   I/O times: (2.0, 33.0 -> 34.0)
+Level  35 :     n19179/a    (in01f01)   Arrival =  35.0.   I/O times: (34.0 -> 35.0)
+Level  36 :     n19181/b    (no02f01)   Arrival =  36.0.   I/O times: (2.0, 35.0 -> 36.0)
+Level  37 :     n19182/a    (in01f01)   Arrival =  37.0.   I/O times: (36.0 -> 37.0)
+Level  38 :     n19184/b    (no02f01)   Arrival =  38.0.   I/O times: (2.0, 37.0 -> 38.0)
+Level  39 :     n19190/b    (no02f01)   Arrival =  39.0.   I/O times: (4.0, 38.0 -> 39.0)
+Level  40 :     n19191/a    (in01f01)   Arrival =  40.0.   I/O times: (39.0 -> 40.0)
+Level  41 :     n19193/b    (na02f01)   Arrival =  41.0.   I/O times: (39.0, 40.0 -> 41.0)
+Level  42 :     n19194/a    (in01f01)   Arrival =  42.0.   I/O times: (41.0 -> 42.0)
+Level  43 :     n19195/a    (no02f01)   Arrival =  43.0.   I/O times: (42.0, 1.0 -> 43.0)
+Level  44 :     n19546/b    (no02f01)   Arrival =  44.0.   I/O times: (42.0, 43.0 -> 44.0)
+Level  45 :     n19547/a    (in01f01)   Arrival =  45.0.   I/O times: (44.0 -> 45.0)
+Level  46 :     n19549/a    (no03f01)   Arrival =  46.0.   I/O times: (45.0, 42.0, 40.0 -> 46.0)
+Level  47 :     n19550/a    (in01f01)   Arrival =  47.0.   I/O times: (46.0 -> 47.0)
+Level  48 :     n19551/a    (na02f01)   Arrival =  48.0.   I/O times: (47.0, 46.0 -> 48.0)
+Level  49 :     n20532/a    (na02f01)   Arrival =  49.0.   I/O times: (48.0, 21.0 -> 49.0)
+Level  50 :     n20534/b    (na02f01)   Arrival =  50.0.   I/O times: (47.0, 49.0 -> 50.0)
+Level  51 :     n20535/a    (no03f01)   Arrival =  51.0.   I/O times: (50.0, 50.0, 47.0 -> 51.0)
+Level  52 :     n20768/a    (no02f01)   Arrival =  52.0.   I/O times: (51.0, 48.0 -> 52.0)
+Level  53 :     n20769/a    (in01f01)   Arrival =  53.0.   I/O times: (52.0 -> 53.0)
+Level  54 :     n20771/b    (no02f01)   Arrival =  54.0.   I/O times: (50.0, 53.0 -> 54.0)
+Level  55 :     n20784/b    (no03f01)   Arrival =  55.0.   I/O times: (53.0, 54.0, 38.0 -> 55.0)
+Level  56 :     n20915/a    (no02f01)   Arrival =  56.0.   I/O times: (55.0, 55.0 -> 56.0)
+Level  57 :     n20916/a    (in01f01)   Arrival =  57.0.   I/O times: (56.0 -> 57.0)
+Level  58 :     n20917/a    (na02f01)   Arrival =  58.0.   I/O times: (57.0, 56.0 -> 58.0)
+Level  59 :     n20919/b    (na02f01)   Arrival =  59.0.   I/O times: (57.0, 58.0 -> 59.0)
+Level  60 :     n21323/a    (in01f01)   Arrival =  60.0.   I/O times: (59.0 -> 60.0)
+Level  61 :     n40186/a    (no02f01)   Arrival =  61.0.   I/O times: (60.0, 36.0 -> 61.0)
+Level  62 :     n40900/a    (in01f01)   Arrival =  62.0.   I/O times: (61.0 -> 62.0)
+Level  63 :     n40901/b    (ao12f01)   Arrival =  63.0.   I/O times: (59.0, 62.0, 61.0 -> 63.0)
+Level  64 :     n40902/a    (in01f01)   Arrival =  64.0.   I/O times: (63.0 -> 64.0)
+Level  65 :     n40907/b    (no02f01)   Arrival =  65.0.   I/O times: (63.0, 64.0 -> 65.0)
+Level  66 :     n40909/b    (no02f01)   Arrival =  66.0.   I/O times: (64.0, 65.0 -> 66.0)
+Level  67 :     n40910/a    (in01f01)   Arrival =  67.0.   I/O times: (66.0 -> 67.0)
+Level  68 :     n40911/a    (no02f01)   Arrival =  68.0.   I/O times: (67.0, 50.0 -> 68.0)
+Level  69 :     n40912/a    (in01f01)   Arrival =  69.0.   I/O times: (68.0 -> 69.0)
+Level  70 :     n40916/a    (oa12f01)   Arrival =  70.0.   I/O times: (69.0, 67.0, 67.0 -> 70.0)
+Level  71 :     n40928/c    (oa12f01)   Arrival =  71.0.   I/O times: (68.0, 67.0, 70.0 -> 71.0)
+Level  72 :     n40929/a    (na02f01)   Arrival =  72.0.   I/O times: (71.0, 69.0 -> 72.0)
+Level  73 :     n40933/c    (no04f01)   Arrival =  73.0.   I/O times: (71.0, 68.0, 72.0, 69.0 -> 73.0)
+Level  74 :     n42198/a    (no02f01)   Arrival =  74.0.   I/O times: (73.0, 72.0 -> 74.0)
+Level  75 :     n42481/a    (no02f01)   Arrival =  75.0.   I/O times: (74.0, 72.0 -> 75.0)
+Level  76 :     n42482/b    (ao12f01)   Arrival =  76.0.   I/O times: (72.0, 75.0, 70.0 -> 76.0)
+Level  77 :     n42605/b    (ao12f01)   Arrival =  77.0.   I/O times: (71.0, 76.0, 72.0 -> 77.0)
+Level  78 :     n42606/a    (na02f01)   Arrival =  78.0.   I/O times: (77.0, 74.0 -> 78.0)
+Level  79 :     n47397/a    (in01f01)   Arrival =  79.0.   I/O times: (78.0 -> 79.0)
+Level  80 :     n47398/c    (oa12f01)   Arrival =  80.0.   I/O times: (63.0, 78.0, 79.0 -> 80.0)
+Level  81 :      n6091/a    (na02f01)   Arrival =  81.0.   I/O times: (80.0, 80.0 -> 81.0)
+Level  82 : Primary output "n6102_1".   Required time =    0.0.  Path slack =  -81.0.
+*****Synthesis with timing 
+***st: [1;37mcordic_ispd                   :[0m i/o =   34/   64  lat = 1230  and =  38743  lev =111
+rwbrf: [1;37mcordic_ispd                   :[0m i/o =   34/   64  lat = 1230  and =  30379  lev =105
+if -g: Warning: Required times are exceeded at 1212 outputs. The earliest arrival times are used.
+[1;37mcordic_ispd                   :[0m i/o =   34/   64  lat = 1230  and =  52645  lev = 59
+rwbrf: [1;37mcordic_ispd                   :[0m i/o =   34/   64  lat = 1230  and =  39759  lev = 59
+rwbrf: [1;37mcordic_ispd                   :[0m i/o =   34/   64  lat = 1230  and =  39052  lev = 59
+if -g: Warning: Required times are exceeded at 1212 outputs. The earliest arrival times are used.
+[1;37mcordic_ispd                   :[0m i/o =   34/   64  lat = 1230  and =  61223  lev = 49
+rwbrf: [1;37mcordic_ispd                   :[0m i/o =   34/   64  lat = 1230  and =  46534  lev = 49
+aig:timing: [1;37mcordic_ispd                   :[0m i/o =   34/   64  lat = 1230  and =  46534  lev = 49
+Cleanup removed 1 dangling nodes.
+map:timing: [1;37mcordic_ispd                   :[0m i/o =   34/   64  lat = 1230  nd = 59653  edge = 137689  area =137689.00  delay =1900.63  lev = 40
+Buffering ... 
+WireLoads = 0  Degree = 16  Target slew =  50 ps   Gain2 =  300  Buf =    461  Delay =   2855 ps   Time =     0.02 sec
+buffer:timing: print_stats 
+[1;37mcordic_ispd                   :[0m i/o =   34/   64  lat = 1230  nd = 60114  edge = 138150  area =140438.50  delay =2047.57  lev = 44
+print_latch 
+Total latches =  1230. Init0 = 0. Init1 = 0. InitDC = 1230. Const data = 0.
+print_gates 
+ao12f01   Fanin =  3   Instance =     5483   Area =   16449.00    11.71 %          0         0   !(a|b&c)
+ao12f02   Fanin =  3   Instance =       96   Area =     576.00     0.41 %          0         0   !(a|b&c)
+ao22f01   Fanin =  4   Instance =     1160   Area =    4640.00     3.30 %          0         0   !(a&b|c&d)
+ao22f02   Fanin =  4   Instance =       41   Area =     328.00     0.23 %          0         0   !(a&b|c&d)
+ao22f03   Fanin =  4   Instance =        1   Area =      12.00     0.01 %          0         0   !(a&b|c&d)
+bf01f01   Fanin =  1   Instance =       15   Area =      15.00     0.01 %          0         0   a
+bf01f02   Fanin =  1   Instance =      362   Area =     724.00     0.52 %          0         0   a
+bf01f03   Fanin =  1   Instance =       99   Area =     297.00     0.21 %          0         0   a
+in01f01   Fanin =  1   Instance =     9374   Area =    9374.00     6.67 %          0         0   !a
+in01f02   Fanin =  1   Instance =       38   Area =      76.00     0.05 %          0         0   !a
+na02f01   Fanin =  2   Instance =    10429   Area =   20858.00    14.85 %          0         0   !a+!b
+na02f02   Fanin =  2   Instance =      134   Area =     402.00     0.29 %          0         0   !a+!b
+na02f03   Fanin =  2   Instance =       18   Area =      90.00     0.06 %          0         0   !a+!b
+na03f01   Fanin =  3   Instance =     3888   Area =   11664.00     8.31 %          0         0   !a+!b+!c
+na03f02   Fanin =  3   Instance =       52   Area =     234.00     0.17 %          0         0   !a+!b+!c
+na03f03   Fanin =  3   Instance =        9   Area =      54.00     0.04 %          0         0   !a+!b+!c
+na04f01   Fanin =  4   Instance =      985   Area =    3940.00     2.81 %          0         0   !a+!b+!c+!d
+na04f02   Fanin =  4   Instance =       35   Area =     210.00     0.15 %          0         0   !a+!b+!c+!d
+na04f03   Fanin =  4   Instance =        4   Area =      32.00     0.02 %          0         0   !a+!b+!c+!d
+no02f01   Fanin =  2   Instance =    15989   Area =   31978.00    22.77 %          0         0   !a&!b
+no02f02   Fanin =  2   Instance =      142   Area =     426.00     0.30 %          0         0   !a&!b
+no02f03   Fanin =  2   Instance =       24   Area =     120.00     0.09 %          0         0   !a&!b
+no03f01   Fanin =  3   Instance =     4366   Area =   13098.00     9.33 %          0         0   !a&!b&!c
+no03f02   Fanin =  3   Instance =       47   Area =     211.50     0.15 %          0         0   !a&!b&!c
+no03f03   Fanin =  3   Instance =        5   Area =      30.00     0.02 %          0         0   !a&!b&!c
+no04f01   Fanin =  4   Instance =     1042   Area =    4168.00     2.97 %          0         0   !a&!b&!c&!d
+no04f02   Fanin =  4   Instance =       30   Area =     180.00     0.13 %          0         0   !a&!b&!c&!d
+no04f03   Fanin =  4   Instance =        7   Area =      56.00     0.04 %          0         0   !a&!b&!c&!d
+oa12f01   Fanin =  3   Instance =     5114   Area =   15342.00    10.92 %          0         0   !(a&(b|c))
+oa12f02   Fanin =  3   Instance =      108   Area =     648.00     0.46 %          0         0   !(a&(b|c))
+oa12f03   Fanin =  3   Instance =        2   Area =      18.00     0.01 %          0         0   !(a&(b|c))
+oa22f01   Fanin =  4   Instance =      983   Area =    3932.00     2.80 %          0         0   !((a|b)&(c|d))
+oa22f02   Fanin =  4   Instance =       32   Area =     256.00     0.18 %          0         0   !((a|b)&(c|d))
+TOTAL                  Instance =    60114   Area =  140438.50   100.00 %   AbsDiff = 0
+print_fanio 
+The distribution of fanins and fanouts in the network:
+         Number   Nodes with fanin  Nodes with fanout
+              1 :         9888             26145  
+              2 :        26736             18742  
+              3 :        19170              7326  
+              4 :         4320              3239  
+              5 :                           1621  
+              6 :                            910  
+              7 :                            537  
+              8 :                            358  
+              9 :                            246  
+        10 - 19 :                            990  
+Fanins: Max = 4. Ave = 2.30.  Fanouts: Max = 16. Ave =  2.24.
+print_delay 
+Critical path from PI "delay_sub_ln23_0_unr5_stage3_stallmux_q_31_" to PO "n3733":
+Level   0 : Primary input "delay_sub_ln23_0_unr5_stage3_stallmux_q_31_".   Arrival time =   0.0. 
+Level   1 :     n21993/a    (in01f01)   Arrival =  32.2.   I/O times: (0.0 -> 32.2)
+Level   2 :     n21994/a    (bf01f03)   Arrival =  59.5.   I/O times: (32.2 -> 59.5)
+Level   3 :     n23000/b    (na02f03)   Arrival = 106.9.   I/O times: (0.0, 59.5 -> 106.9)
+Level   4 :     n23024/a    (no02f01)   Arrival = 154.3.   I/O times: (106.9, 0.0 -> 154.3)
+Level   5 :     n23025/a    (in01f01)   Arrival = 186.5.   I/O times: (154.3 -> 186.5)
+Level   6 :     n23031/a    (na03f01)   Arrival = 247.9.   I/O times: (186.5, 133.2, 186.5 -> 247.9)
+Level   7 :     n23032/c    (no03f01)   Arrival = 309.4.   I/O times: (233.9, 181.6, 247.9 -> 309.4)
+Level   8 :     n23040/a    (na02f01)   Arrival = 356.7.   I/O times: (309.4, 307.7 -> 356.7)
+Level  10 :     n23041/c    (oa12f01)   Arrival = 423.8.   I/O times: (340.7, 348.9, 356.7 -> 423.8)
+Level  11 :     n23071/a    (ao22f01)   Arrival = 490.8.   I/O times: (423.8, 403.3, 337.0, 310.5 -> 490.8)
+Level  12 :     n23113/b    (ao12f01)   Arrival = 557.9.   I/O times: (241.0, 490.8, 490.3 -> 557.9)
+Level  13 :     n23129/a    (no02f02)   Arrival = 605.2.   I/O times: (557.9, 369.7 -> 605.2)
+Level  14 :     n23130/a    (bf01f03)   Arrival = 632.5.   I/O times: (605.2 -> 632.5)
+Level  15 :     n23131/a    (bf01f03)   Arrival = 659.8.   I/O times: (632.5 -> 659.8)
+Level  16 :     n23132/a    (bf01f03)   Arrival = 687.1.   I/O times: (659.8 -> 687.1)
+Level  17 :     n23133/a    (bf01f03)   Arrival = 714.4.   I/O times: (687.1 -> 714.4)
+Level  18 :     n25485/c    (ao12f01)   Arrival = 781.4.   I/O times: (548.5, 606.7, 714.4 -> 781.4)
+Level  19 :     n25486/a    (in01f01)   Arrival = 813.6.   I/O times: (781.4 -> 813.6)
+Level  20 :     n25490/b    (ao12f01)   Arrival = 880.7.   I/O times: (782.1, 813.6, 809.2 -> 880.7)
+Level  21 :     n25491/d    (no04f01)   Arrival = 956.5.   I/O times: (769.7, 822.6, 816.4, 880.7 -> 956.5)
+Level  22 :     n25823/a    (in01f01)   Arrival = 988.7.   I/O times: (956.5 -> 988.7)
+Level  24 :     n25824/c    (oa12f01)   Arrival =1055.8.   I/O times: (962.0, 978.6, 988.7 -> 1055.8)
+Level  25 :     n25825/c    (oa12f02)   Arrival =1122.8.   I/O times: (935.4, 1018.4, 1055.8 -> 1122.8)
+Level  26 :     n25826/a    (bf01f03)   Arrival =1150.1.   I/O times: (1122.8 -> 1150.1)
+Level  27 :     n26537/c    (oa12f01)   Arrival =1217.1.   I/O times: (980.8, 691.3, 1150.1 -> 1217.1)
+Level  28 :     n26543/b    (oa12f01)   Arrival =1284.2.   I/O times: (1097.8, 1217.1, 1058.6 -> 1284.2)
+Level  29 :     n26561/a    (oa22f01)   Arrival =1351.2.   I/O times: (1284.2, 1153.4, 691.3, 1213.8 -> 1351.2)
+Level  30 :     n26594/a    (oa22f01)   Arrival =1418.3.   I/O times: (1351.2, 1290.8, 1033.1, 1312.4 -> 1418.3)
+Level  32 :     n26603/a    (na03f01)   Arrival =1479.7.   I/O times: (1418.3, 1392.1, 1339.7 -> 1479.7)
+Level  33 :     n26628/b    (ao22f01)   Arrival =1546.7.   I/O times: (1409.3, 1479.7, 1417.4, 1331.6 -> 1546.7)
+Level  34 :     n26629/c    (ao12f01)   Arrival =1613.8.   I/O times: (1454.8, 1381.3, 1546.7 -> 1613.8)
+Level  35 :     n26630/c    (oa12f01)   Arrival =1680.8.   I/O times: (1507.4, 1508.4, 1613.8 -> 1680.8)
+Level  36 :     n26631/c    (ao12f01)   Arrival =1747.9.   I/O times: (1582.3, 1548.4, 1680.8 -> 1747.9)
+Level  37 :     n26632/d    (no04f01)   Arrival =1823.7.   I/O times: (1601.4, 1631.6, 1604.5, 1747.9 -> 1823.7)
+Level  38 :     n26633/c    (no03f01)   Arrival =1885.1.   I/O times: (1704.2, 1709.8, 1823.7 -> 1885.1)
+Level  42 :     n60802/b    (no03f01)   Arrival =1946.6.   I/O times: (1837.3, 1885.1, 1700.3 -> 1946.6)
+Level  43 :     n60803/b    (no02f01)   Arrival =1994.0.   I/O times: (1930.7, 1946.6 -> 1994.0)
+Level  44 :     n60817/a    (oa12f01)   Arrival =2047.6.   I/O times: (1994.0, 1976.7, 1737.6 -> 2047.6)
+Level  45 : Primary output "n3733".   Required time =    0.0.  Path slack = -2047.6.
+Saving out ./rundata/cordic_ispd_timing.v *** 
+
+3. Latch mapping - cordic_ispd
+------------------------------------------------------------------------------
+python3 ../utils/100_map_latches.py -i ./rundata/cordic_ispd_timing.v --latch ms00f20 --clock clk -o ./synthesis/cordic_ispd.timing/cordic_ispd.v
+Input file:  ./rundata/cordic_ispd_timing.v
+Latch cell:  ms00f20
+Clock port:  clk
+Output file: ./synthesis/cordic_ispd.timing/cordic_ispd.v
+------------------------------------------------------------------------------
+
+

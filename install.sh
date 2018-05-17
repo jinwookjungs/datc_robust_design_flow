@@ -12,3 +12,4 @@ cd $ROOT_DIR
 # Install ABC
 cd bin/
 
+cd $ROOT_DIR

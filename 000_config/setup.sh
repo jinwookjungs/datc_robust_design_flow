@@ -28,6 +28,24 @@ declare -a these_grouters=("${global_routers[@]}")
 
 clock_name='clk'
 
+# Create directories
+mkdir -p ../100_logic_synthesis/reports 
+mkdir -p ../100_logic_synthesis/rundata 
+mkdir -p ../100_logic_synthesis/synthesis
+mkdir -p ../110_remove_dangling_nets/verilog
+mkdir -p ../200_floorplanning/bookshelf
+mkdir -p ../210_create_def/def
+mkdir -p ../300_placement/placement
+mkdir -p ../310_write_def/def
+mkdir -p ../320_timing/timing
+mkdir -p ../400_gate_sizing/sizing
+mkdir -p ../410_write_bookshelf/bookshelf
+mkdir -p ../420_legalization/placement
+mkdir -p ../430_write_def/def
+mkdir -p ../440_timing/timing
+mkdir -p ../500_gr_bench_gen/gr_bench
+mkdir -p ../510_global_route/global_route
+
 bench_dir=`cd ../benchmarks; pwd -P`
 logic_synth_dir=`cd ../100_logic_synthesis/synthesis; pwd -P`
 final_verilog_dir=`cd ../110_remove_dangling_nets/verilog; pwd -P`

@@ -2,7 +2,7 @@
 
 # Benchmarks
 bench_suite=(
-    "cordic2_ispd"
+    "cordic_ispd"
 )
 
 # Logic Synthesis
