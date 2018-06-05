@@ -1,4 +1,11 @@
 # DATC Robust Design Flow
+Last updated: Tue Jun  5 12:46:18 KST 2018
+
+## Notes
+This repository is currently under construction.
+Also, we are currently **not** providing the individual point tool binaries.
+
+## Introduction
 In recent years, there has been a slew of design automation contests and 
 released benchmarks. Past examples include ISPD place & route contests, DAC 
 placement contests, timing analysis contests at TAU, and CAD contests at ICCAD. 
@@ -218,10 +225,10 @@ DOI: https://doi.org/10.1145/2966986.2980074
 
 
 ## Authors
-* Iris Hui-Ru Jiang
-* Gi-Joon Nam
-* Victor N. Kravets
-* Laleh Behjat
-* Yi-Lang Li
+* Iris Hui-Ru Jiang - National Taiwan University
+* Victor N. Kravets - IBM Thomas J. Watson Research Center
+* Jianli Chen - Fuzhou University
+* Yih-Lang Li - National Chiao Tung University
 * [Jinwook Jung](mailto:jinwookjungs@gmail.com) - [KAIST](http://dtlab.kaist.ac.kr)
+* Gi-Joon Nam - IBM Thomas J. Watson Research Center
 
