@@ -1,8 +1,9 @@
 # DATC Robust Design Flow
-Last updated: Tue Jun  5 12:46:18 KST 2018
 
 ## Notes
-This repository is currently under construction.
+Last updated on Tue Jun  5 12:46:18 KST 2018.
+
+This repository is currently **under construction**.
 Also, we are currently **not** providing the individual point tool binaries.
 
 ## Introduction
