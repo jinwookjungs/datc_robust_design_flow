@@ -82,13 +82,17 @@ in ICCAD’15 TDP contest). Please refer to the paper for more details:
 ### Installing Benchmarks
 Inside `benchmarks/utils` directory, theres’s a utility script named `install_tau17_benchmarks.py`.
 Run it by:
-    $ python install_tau17_benchmarks.py
+```
+$ python install_tau17_benchmarks.py
+```
 It will (1) download the benchmarks, (2) remap the benchmarks to the RDF cell library, (3) remove the dangling wires, and (4) set up the benchmark directory.
 
 **Notes**: The above python script only works with **python of version greater than 3**.
 Also, it requires an additional module “requests”.
 So, if you get an error "ModuleNotFoundError: No module named ‘requests’”, please install it, for example, by:
-    $ sudo pip install requests
+```
+$ sudo pip install requests
+```
 
 ## Flow configuration
 You can configure the OpenDesign Flow Database with your preferred logic 
