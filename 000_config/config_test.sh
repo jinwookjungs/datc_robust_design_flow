@@ -2,11 +2,14 @@
 
 # Benchmarks
 bench_suite=(
+    "ac97_ctrl"
     "cordic2_ispd"
+    "vga_lcd"
 )
 
 # Logic Synthesis
 synth_scenarios=(
+    "resyn"
     "compress2rs"
 )
 max_fanout=16
