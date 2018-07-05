@@ -47,10 +47,16 @@ OpenDesign Flow Database consists of the following directory structure:
 
 To give a first shot, please try runnning:
 ```
-./run.sh example
+$ cd /path/to/rdf
+$ ./run.sh example
+```
+or
+```
+$ cd /path/to/rdf
+$ ./run.sh test
 ```
 which runs logic synthesis, placement, gate sizing, and global router with 
-the cordic_ispd design.
+a few designs.
 The result of each stage can be found under the stage's directory, like
 ```
 ./100_logic_synthesis/synthesis
@@ -60,8 +66,8 @@ The result of each stage can be found under the stage's directory, like
 ./510_global_route/global_route
 ```
 
-Every stage has the main run script (**run_suite**). The configuration of design flow
-can be customized using the configuration script located at 000_config. We can 
+Every stage has the main run script (**`run_suite`**). The configuration of design flow
+can be customized using the configuration script located at `000_config`. We can 
 specify logic synthesis scenario, utilization of chip floorplan, placer, gate 
 sizer, as well as global router. You can find an example flow configuration at:
 ```
@@ -85,11 +91,13 @@ Run it by:
 ```
 $ python install_tau17_benchmarks.py
 ```
-It will (1) download the benchmarks, (2) remap the benchmarks to the RDF cell library, (3) remove the dangling wires, and (4) set up the benchmark directory.
+It will (1) download the benchmarks, (2) remap the benchmarks to the RDF cell library,
+(3) remove the dangling wires, and (4) set up the benchmark directory.
 
 **Notes**: The above python script only works with **python of version greater than 3**.
-Also, it requires an additional module “requests”.
-So, if you get an error "ModuleNotFoundError: No module named ‘requests’”, please install it, for example, by:
+Also, it requires an additional module `requests`.
+So, if you get an error `ModuleNotFoundError: No module named ‘requests’`, 
+please install it, for example, by:
 ```
 $ sudo pip install requests
 ```
