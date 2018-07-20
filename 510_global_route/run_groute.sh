@@ -39,9 +39,11 @@ if test "$router" = "NCTUgr"; then
 #------------------------------------------------------------------------------
 elif test "$router" = "FastRoute"; then
     # It seems not to work when the binary is not in the current location
+    ln -s ../bin/FastRoute
     cmd="./FastRoute $input_gr -o $out_name"
     echo $cmd
     eval $cmd | tee $log
+    rm -f FastRoute
 
 #------------------------------------------------------------------------------
 # BFG-R
@@ -52,3 +54,4 @@ elif test "$router" = "BFG-R"; then
     echo $cmd
     eval $cmd | tee $log
 fi
+

@@ -3,7 +3,6 @@
 
 source ../000_config/setup.sh $1
 
-
 echo ""
 echo "================================================================================"
 echo "           ___  __                            __   "
@@ -15,6 +14,7 @@ echo "==========================================================================
 echo ""
 
 mkdir -p placement
+CUR_DIR=`pwd`
 
 for bench in "${these_benches[@]}"
 do
@@ -31,6 +31,21 @@ do
             $cmd | tee ${bench}.place.log.txt
 
             mv ${bench}.place.log.txt ${out_dir}
+
+            out_name="${bench}.${scenario}.${placer}"
+            ln -s ${bench}.solution.pl ${out_dir}/${out_name}.pl
+
+            # Generate a placement plot
+            cd $out_dir
+            cmd="python3 ${CUR_DIR}/../utils/300_placement_plotter.py"
+            cmd="$cmd --nodes ${bookshelf_dir}/${bench}.nodes --scl ${bookshelf_dir}/${bench}.scl"
+            cmd="$cmd --pl ${out_name}.pl --out out"
+            echo $cmd; eval $cmd
+            gnuplot out.plt
+            mv out.plt ${out_name}.plt
+            mv out.png ${out_name}.png
+
+            cd $CUR_DIR
         done
 	done
 done

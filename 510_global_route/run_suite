@@ -42,30 +42,14 @@ do
 
                     # DAC2012 bookshelf format for plot generation
                     if test $run_gs = false; then
-                        # Solution pl name
-                        if test $placer = "Capo"; then
-                            solution_pl="${bench}_Capo.pl"
-                        elif test $placer = "NTUPlace3"; then
-                            solution_pl="${bench}.ntup.pl"
-                        elif test $placer = "ComPLx"; then
-                            solution_pl="${bench}_FP_dp.pl"
-                        elif test $placer = "FastPlaceGP"; then
-                            solution_pl="${bench}_FP_dp.pl"
-                        elif test $placer = "mPL6"; then
-                            solution_pl="${bench}-mPL.pl"
-                        elif test $placer = "mPL5"; then
-                            solution_pl="${bench}-mPL.pl"
-                        else
-                            echo "Invalid placer."
-                            exit
-                        fi
+                        pl=${bench}.${scenario}.${placer}.pl
                         bookshelf_dir=${floorplan_dir}/${bench}.${scenario}
-                        bookshelf_pl="${placement_dir}/${bench}.${scenario}.${placer}/${solution_pl}"
+                        bookshelf_pl="${placement_dir}/${bench}.${scenario}.${placer}/${pl}"
                     else
                         bookshelf_dir=${sizer_bookshelf_dir}/${bench}.${scenario}.${placer}.${sizer}
                         bookshelf_pl="${sizer_legalization_dir}/${bench}.${scenario}.${placer}.${sizer}.FastPlace/${bench}_FP_dp.pl"
                     fi
-                    
+
                     bookshelf_out_dir="bookshelf_${bench}"
                     mkdir ${bookshelf_out_dir}
                     cp ${bookshelf_dir}/${bench}.aux ${bookshelf_out_dir}/
@@ -78,9 +62,8 @@ do
 
                     ../utils/500_gen_bookshelf_route.tcl ${gr_bench_file} ${bookshelf_out_dir}/${bench}.nodes
                     echo `cat ${bookshelf_out_dir}/${bench}.aux` "${bench}.route" > ${bookshelf_out_dir}/${bench}.aux
-     
+
                     # Plotting
-                    solution_pl=${place_dir}/${base_name}
                     cmd="../utils/510_dac2012_evaluate_solution.pl -p ${bookshelf_out_dir}/${bench}.aux ${bookshelf_out_dir}/${bench}.pl $out_name"
                     echo "Running: $cmd"
                     $cmd | tee ${out_name}.dac2012_eval
