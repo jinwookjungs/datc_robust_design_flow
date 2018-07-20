@@ -1,8 +1,9 @@
 *.swp
 **/__pycache__
 **/*.pyc
-bin/unlicensed
-!bin/unlicensed/README.md
+bin/unlicensed/placer
+bin/unlicensed/router
+bin/unlicensed/sizer
 bin/abc*
 !bin/README
 100_logic_synthesis/reports 
