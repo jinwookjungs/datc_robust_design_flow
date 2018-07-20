@@ -12,28 +12,12 @@ do
         do
             aux="${floorplan_dir}/bookshelf-${bench}.${scenario}/${bench}.aux"
 
-            # Solution pl name
-            if test $placer = "Capo"; then
-                solution_pl="${bench}_Capo.pl"
-            elif test $placer = "NTUPlace3"; then
-                solution_pl="${bench}.ntup.pl"
-            elif test $placer = "ComPLx"; then
-                solution_pl="${bench}_FP_dp.pl"
-            elif test $placer = "FastPlaceGP"; then
-                solution_pl="${bench}_FP_dp.pl"
-            elif test $placer = "mPL6"; then
-                solution_pl="${bench}-mPL.pl"
-            elif test $placer = "mPL5"; then
-                solution_pl="${bench}-mPL.pl"
-            else
-                echo "Invalid placer."
-                exit
-            fi
+            pl=${bench}.${scenario}.${placer}.pl
 
             lef="${bench_dir}/${bench}/${bench}.lef"
             final_verilog="${final_verilog_dir}/${bench}.${scenario}/${bench}.v"
             initial_def="${initial_def_dir}/${bench}.${scenario}/${bench}.def"
-            placement="${placement_dir}/${bench}.${scenario}.${placer}/${solution_pl}"
+            placement="${placement_dir}/${bench}.${scenario}.${placer}/${pl}"
             out_def=${bench}.def
 
             echo "Write DEF from ${placement}"

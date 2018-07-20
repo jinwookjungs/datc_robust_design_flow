@@ -27,7 +27,7 @@ def parse_pl(pl_file_name):
 
     # Skip the first line: UCLA nodes ...
     lines_iter = iter(lines[1:])
- 
+
     pl_dict = dict()
     for l in lines_iter:
         if l.startswith('#'): continue

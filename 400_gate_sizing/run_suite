@@ -5,7 +5,7 @@ source ../000_config/setup.sh $1
 
 
 if test $run_gs = false ; then
-    echo "(I) Gate sizing is turned off."
+    echo -e "(I) Gate sizing is turned off.\n"
     exit
 fi
 

@@ -3,7 +3,7 @@
     Author         : Jinwook Jung
     Created on     : Sat 12 Aug 2017 10:09:16 PM KST
     Last modified  : 2017-08-12 23:40:21
-    Description    : 
+    Description    :
 '''
 from __future__ import print_function, division
 from time import gmtime, strftime
@@ -42,7 +42,7 @@ class Bookshelf:
         self.verilog.read_verilog(self.src_v)
         self.verilog.construct_circuit_graph()
         self.verilog.print_stats()
-        
+
         print ("Parsing LEF: %s" % (self.src_lef))
         self.lef = lef_parser.Lef()
         self.lef.set_m1_layer_name(M1_LAYER_NAME)
@@ -127,8 +127,8 @@ class Bookshelf:
         f.write("NumNets\t:\t%d\n" % (len(nets)))
 
         # net dictionary - key: name, val: list( [name, I|O, x_offset, y_offset] )
-        net_dict = {n.name : [[n.name, 'I', 0.0, 0.0]] for n in inputs}
-        net_dict.update({n.name : [[n.name, 'O', 0.0, 0.0]] for n in outputs})
+        net_dict = {n.name : [[n.name, 'O', 0.0, 0.0]] for n in inputs}
+        net_dict.update({n.name : [[n.name, 'I', 0.0, 0.0]] for n in outputs})
         net_dict.update({n.name : list() for n in wires} )
 
         num_pins = len(inputs + outputs)
@@ -147,12 +147,12 @@ class Bookshelf:
             # If you are using Python 3.5:
             # pin_name_to_net = {**g.ipin_name_to_net, **g.opin_name_to_net}
             # Else, please you the following code
-            pin_name_to_net = dict(list(g.ipin_name_to_net.items()) 
+            pin_name_to_net = dict(list(g.ipin_name_to_net.items())
                                    + list(g.opin_name_to_net.items()))
 
             for pin_name, net in pin_name_to_net.items():
                 # FIXME
-                if net.name == self.clock_port: 
+                if net.name == self.clock_port:
                     continue
                 num_pins += 1
                 try:
@@ -162,15 +162,15 @@ class Bookshelf:
                                      '(v, lef) = (%s, %s)\n' % (g, lef_cell))
                     raise SystemExit(-1)
 
-                lef_pin_x = lef_pin.x / self.width_divider 
-                lef_pin_y = lef_pin.y / self.height_divider 
+                lef_pin_x = lef_pin.x / self.width_divider
+                lef_pin_y = lef_pin.y / self.height_divider
 
                 direction = lef_pin.direction
                 x_offset = lef_pin_x - node_x
                 y_offset = lef_pin_y - node_y
 
                 net_dict[net.name].append([g.name, direction, x_offset, y_offset])
-            
+
         f.write("NumPins\t:\t%d\n" % (num_pins))
 
         for net, pins in sorted(net_dict.items()):
@@ -219,7 +219,7 @@ class Bookshelf:
         num_row = ceil(x_length / site_height_in_bs)
 
         self.die_width, self.die_height = x_length, y_length
-       
+
         site_orient = 'N'
         site_symmetry = 'Y'
         subrow_origin = 0
@@ -243,16 +243,16 @@ class Bookshelf:
         f.close()
 
     def create_bookshelf_pl(self, filename='out'):
-        """ Create bookshelf .pl file. 
-        
+        """ Create bookshelf .pl file.
+
         Input and output ports are arbitrarily placed along the chip area.
-        All the instances are placed at (0,0) 
+        All the instances are placed at (0,0)
         """
         f = open(filename+ '.pl', 'w')
         f.write('UCLA pl 1.0\n\n')
 
         # nodes file - skip the first line and comments
-        lines = [x.rstrip() for x in open(filename + '.nodes', 'r') 
+        lines = [x.rstrip() for x in open(filename + '.nodes', 'r')
                  if not x.startswith('#')][1:]
         lines_iter = iter(lines)
 
@@ -278,7 +278,7 @@ class Bookshelf:
 
             # Node definitions
             else:
-                try: 
+                try:
                     assert len(tokens) in [3,4]
 
                 except AssertionError:
@@ -291,10 +291,10 @@ class Bookshelf:
                 else:
                     f.write("%s\t%d\t%d\t: N\n" % (node_name, 0, 0))
 
-        try: 
+        try:
             assert len(terminal_list) == num_terminals
         except AssertionError:
-            sys.stderr.write("len(terminal_list) (%d) != num_terminals (%d)\n" 
+            sys.stderr.write("len(terminal_list) (%d) != num_terminals (%d)\n"
                              % (len(terminal_list), num_terminals))
             raise SystemExit(-1)
 
@@ -306,13 +306,13 @@ class Bookshelf:
         for i in range(diff):
             num_ports[3-i] -= 1
 
-        south = [(i*(self.die_width / num_ports[0]), 0.0) 
+        south = [(i*(self.die_width / num_ports[0]), 0.0)
                  for i in range(num_ports[0])]
-        east  = [(self.die_width, i*(self.die_height / num_ports[1])) 
+        east  = [(self.die_width, i*(self.die_height / num_ports[1]))
                  for i in range(num_ports[1])]
-        north = [(self.die_width - i*(self.die_width / num_ports[2]), self.die_height) 
+        north = [(self.die_width - i*(self.die_width / num_ports[2]), self.die_height)
                  for i in range(num_ports[2])]
-        west  = [(0.0, self.die_height - i*(self.die_height / num_ports[3])) 
+        west  = [(0.0, self.die_height - i*(self.die_height / num_ports[3]))
                  for i in range(num_ports[3])]
 
         coords = south + east + north + west
@@ -320,7 +320,7 @@ class Bookshelf:
             x = int(round(p[0]/site_width_in_bs)) * site_width_in_bs
             y = int(round(p[1]/site_height_in_bs)) * site_height_in_bs
             f.write("%s\t%d\t%d\t: N\n" % (terminal, x, y))
-                            
+
         f.close()
 
     def write_bookshelf_aux(self, filename='out'):

@@ -150,7 +150,6 @@ adjustment=10
 safety=90
 ```
 
-
 ## Logic Synthesis
 The **run_suite** script sets up and runs the synthesis expriments.  To launch a 
 batch job on the full set of TAU benchmarks, the script is invoked as: 

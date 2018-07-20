@@ -5,7 +5,7 @@ source ../000_config/setup.sh $1
 
 
 if test $run_gs = false ; then
-    echo "(I) Gate sizing is turned off."
+    echo -e "(I) Gate sizing is turned off.\n"
     exit
 fi
 
@@ -64,7 +64,6 @@ do
                 # Move output files
                 rm -f uitimer.tr
 
-    #            gnuplot ${bench}_critical.plt
                 gnuplot ${bench}_grid.plt
                 mv *.png ${out_dir}/out
 
@@ -75,6 +74,8 @@ do
                 mv *.tau2015 ${out_dir}/out/${bench}.tau2015
                 mv *.timing ${out_dir}/out/${bench}.timing
                 mv ${bench}_grid.plt ${out_dir}/out
+                mv ${bench}.ops ${out_dir}/out
+
                 if [ -f check_legality.log ]; then
                     mv check_legality.log ${out_dir}/out
                 fi

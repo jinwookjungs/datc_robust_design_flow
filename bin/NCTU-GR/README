@@ -1,0 +1,98 @@
+#NCTU-GR 2.0 is designed by Wen-Hao Liu. 
+Author's website:  http://cs.nctu.edu.tw/~whliu
+
+NCTU-GR 2.0, Wen-Hao Liu and Prof. Yih-Lang Li, 
+Department of Computer Science, 
+National Chiao Tung University, Taiwan.
+
+
+== FILE_LIST == 
+NCTUgr
+PORT9.dat
+POST9.dat
+POWV9.dat
+README
+[Parameter_Files] 
+¢| RegularDefault.set       
+¢| RegularHighQuality.set
+¢| RegularDacContest.set
+¢| RegularIccadContest.set
+¢| FastDefault.set
+¢| PlaceForGR.set
+¢| PlaceForDR.set
+[DesignRule_Files] 
+¢| design22nm.rule
+¢| design28nm.rule
+¢| design45nm.rule
+¢| design90nm.rule
+
+
+== Execution Command ==
+Global Routing in regular mode:
+       ./NCTUgr  REGULAR  <Circuit.aux>  <Placement_solution.pl>  <Parameter.set> [GR result]
+       ./NCTUgr  REGULAR_ISPD  <ISPD'08 format benchmark>  <Parameter.set>  [GR result]
+Global Routing in fast mode:
+       ./NCTUgr  FAST  <Circuit.aux>  <Placement_solution.pl>  <Parameter.set> [GR result]
+       ./NCTUgr  FAST_ISPD  <ISPD'08 format benchmark>  <Parametet.set>  [GR result]
+Routability optimizer:
+       ./NCTUgr  PLACE  <Circuit.aux>  <Placement_solution.pl>  <Parameter.set> [PL result]
+Convert placement results to LEF/DEF files:
+       ./NCTUgr  CONVERT  <Circuit.aux>  <Placement_solution.pl>  [LEF/DEF files]
+       ./NCTUgr  CONVERT  <Circuit.aux>  <Placement_solution.pl>  <Design.rule> [LEF/DEF files]
+
+Please refer to the following website to get more information.
+http://cs.nctu.edu.tw/~whliu/NCTU-GR.htm
+
+
+== NOTES ==
+1) All the files associated with the router (listed above) should be present 
+   in the run directory.
+
+2) The benchmark, solution.pl and parameter.set files may be present in a different directory.
+
+3) If you would like to compare the routing results of NCTU-GR 2.0 on ISPD2008 benchmarks with other gloabl routing works, please note that other works does not route the nets that have more than 1000 pins but NCTU-GR 2.0 routes every nets.
+
+
+== INSTRUCTION TO SET PARAMETERS ==
+Users can tune the setting in <Parameter.set> file to control the behavior of NCTU-GR 2.0 to trade off the solution qulaity and runtime.
+
+//Parameters related to regular mode, fast mode, and routability optimizer
+1. NCTU-GR targets to minimize TotalWirelength+VIA_COST*numVia,
+    so VIA_COST is the weight to each single via.
+2. Larger Wirelength_Optimization_Level makes NCTU-GR run slower but get shoter wirelength.
+3. Pin_Blockage_Factor is a factor to make NCTU-GR be aware of local congestion.
+   If Pin_Blockage_Factor=0, NCTU-GR ignores local congestion.
+   If Pin_Blockage_Factor>0, NCTU-GR formulates local congestion into its routing model.
+   More details are introduced by the following paper.   
+   "GLARE: Global and Local Wiring Aware Routability Evaluation", in Proc. DAC, 2012.
+
+//Parameters related to routability optimizer
+4. The value of Placement_Iteration controls the optimization iteration of routability optimizer.  
+5. Each iteration of routability optimizer includes global re-placement and detailed placement stages.
+6. The value of Rounds_Per_Iteration controls the round number of the global re-placement stage.
+7. The value of Avoiding_Blockage_Factor  controls the round number of the detailed placement stage.
+8. Larger value of Avoiding_Blockage_Factor can avoid placing too many cells next to blockages.
+9. Please don't change the value of Blockage_Expanding.
+
+//Parameters related to regular mode and fast mode
+10. The values of Pattern_Routing_Iteration, Monotonic_Routing_Iteration, Maze_Routing_Iteration,
+      and Post_Routing_Iteration can control the iterations of each routing stage.
+11. If Maze_Routing_Iteration = -1, the maze routing stage finishes when overflows = 0
+12. NCTU-GR provides three layer assignment algorithms to trade off runtime and via count.
+     If Layer_Assignment_Algorithm = 1, greedy layssignment is used. (very fast, bad quality)
+     If Layer_Assignment_Algorithm = 2, DP-based layssignment is used. (fast, good qulaity)
+     If Layer_Assignment_Algorithm = 3, negotiation-based layssignment is used. (slow, best quality)
+13. Please set 3D_Optimization_Iteration to zero because there is a bug in the 3D optimization stage
+
+
+== Related Publications ==
+1) Ke-Ren Dai, Wen-Hao Liu and Yih-Lang Li, "Efficient Simulated Evolution Based Rerouting and Congestion-Relaxed Layer Assignment on 3-D Global Routing," in The 14th Asia and South Pacific Design Automation Conference, Yokohama, Jan. 2009, P. 570-575. (Regular mode)
+2) Wen-Hao Liu, Wei-Chun Kao, Yih-Lang Li, and Kai-Yuan Chao, "Multi-Threaded Collision-Aware Global Routing with Bounded-Length Maze Routing," in Proceedings of ACM/IEEE Design Automation Conference, Anaheim, CA, June 2010, P. 200-205. (Regular mode)
+3) Wen-Hao Liu and Yih-Lang Li, "Negotiation-Based Layer Assignment for Via Count and Via Overflow Minimization," in The 16th Asia and South Pacific Design Automation Conference, Jan. 2011, P. 539-544. (Regular mode)
+4) Ke-Ren Dai, Wen-Hao Liu and Yih-Lang Li, "NCTU-GR: Efficient Simulated Evolution Based Rerouting and Congestion-Relaxed Layer Assignment on 3-D Global Routing," IEEE Transactions on Very Large Scale Integration Systems, 2012. (Regular mode)
+5) Wen-Hao Liu, Wei-Chun Kao, Yih-Lang Li, and Kai-Yuan Chao, "NCTU-GR 2.0: Multi-Threaded Collision-Aware Global Routing with Bounded-Length Maze Routing," IEEE Trans. on Computer-Aided Design of Integrated Circuits and Systems, accept, 2013. (Regular mode)
+6) Wen-Hao Liu, Yih-Lang Li and Cheng-Kok Koh, "A Fast Maze-Free Routing Congestion Estimator With Hybrid Unilateral Monotonic Routing," in Proc. International Conference on Computer-Aided Design, 2012. (Fast mode)
+7) Wen-Hao Liu, Cheng-Kok Koh and Yih-Lang Li, "Optimization of Placement Solutions for Routability," in Proceedings of Design Automation Conference, 2013. (Routability Optimizer)
+8) Wen-Hao Liu, Cheng-Kok Koh, and Yih-Lang Li, "Case Study for Placement Solutions in ISPD11 and DAC12 Routability-Driven Placement Contests," in Proc. International Symposium on Physical Design, accept. (Format convertor)
+
+

@@ -9,10 +9,10 @@ contains() {
 }
 if test "$#" -ne 5; then
     echo "Usage: ./run_place.sh <bench> <bookshelf_dir> <placer> <target_density> <out_dir>"
-    echo "Available placers: [ComPLx | NTUPlace3 | mPL6 | mPL5 | Capo]"
+    echo "Available placers: [EhPlacer | ComPLx | NTUPlace3 | mPL6 | mPL5 | Capo | FastPlace-GP]"
     exit
-elif contains "ComPLx NTUPlace3 mPL6 mPL5 Capo FastPlaceGP" $3 = 0; then
-    echo "Available placers: [ComPLx | NTUPlace3 | mPL6 | mPL5 | Capo | FastPlaceGP]"
+elif contains "EhPlacer ComPLx NTUPlace3 mPL6 mPL5 Capo FastPlaceGP" $3 = 0; then
+    echo "Available placers: [EhPlacer | ComPLx | NTUPlace3 | mPL6 | mPL5 | Capo | FastPlace-GP]"
     exit
 fi
 
@@ -30,20 +30,40 @@ aux_file=${bookshelf_dir}/${bench}.aux
 bin_dir="../bin"
 log=${bench}.${placer}.log
 
+echo "Creating output directory: $out_dir"
+echo ""
+if [ -d $out_dir ]; then
+    rm -rf $out_dir
+fi
+mkdir -p $out_dir
+
+#------------------------------------------------------------------------------
+# EhPlacer
+#------------------------------------------------------------------------------
+if test "$placer" = "EhPlacer"; then
+    cp ${bookshelf_dir}/* .
+    cmd="${bin_dir}/EhPlacer-bookshelf -i ${bench}.aux -o ${bench}-EhPlacer_dp.pl -cpu 6"
+    echo $cmd
+    eval $cmd | tee ${log}
+
+    rm -f PO*.dat
+    rm -f ${bench}.aux ${bench}.nodes ${bench}.nets ${bench}.wts ${bench}.scl ${bench}.pl ${bench}.shapes
+
+    mv ${bench}.fp.log.txt ${out_dir}/
+    mv ${bench}.log.txt ${out_dir}/
+    mv ${bench}-EhPlacer_dp.pl ${out_dir}/
+
+    out_pl=${bench}-EhPlacer_dp.pl
 
 #------------------------------------------------------------------------------
 # Capo placer
 #------------------------------------------------------------------------------
-if test "$placer" = "Capo"; then
+elif test "$placer" = "Capo"; then
 
     cmd="$bin_dir/MetaPl-Capo10.2-Lnx64.exe -faster -f $aux_file -save"
     echo $cmd
     eval $cmd | tee ${log}
 
-    if [ -d $out_dir ]; then
-        rm -rf $out_dir
-    fi
-    mkdir -p $out_dir
     mv out.pl ${out_dir}/${bench}_Capo.pl
 
     out_pl=${bench}_Capo.pl
@@ -56,11 +76,6 @@ elif test "$placer" = "NTUPlace3"; then
     cmd="${bin_dir}/ntuplace3 -aux $aux_file -util $target_util"
     echo $cmd
     eval $cmd | tee ${log}
-
-    if [ -d $out_dir ]; then
-        rm -rf $out_dir
-    fi
-    mkdir -p $out_dir
 
     mv *.pl $out_dir
     mv *.plt $out_dir
@@ -83,10 +98,6 @@ elif test "$placer" = "ComPLx"; then
     echo $cmd
     eval $cmd | tee --append ${log}
 
-    if [ -d $out_dir ]; then
-        rm -rf $out_dir
-    fi
-    mkdir -p $out_dir
     mv ${bench}-ComPLx.pl ${out_dir}/
     mv ${bench}_FP_dp.pl ${out_dir}/
 
@@ -111,10 +122,6 @@ elif test "$placer" = "FastPlaceGP"; then
     echo $cmd
     eval $cmd | tee --append ${log}
 
-    if [ -d $out_dir ]; then
-        rm -rf $out_dir
-    fi
-    mkdir -p $out_dir
     mv ${bench}_FP_gp.pl ${out_dir}/
     mv ${bench}_FP_dp.pl ${out_dir}/
 
@@ -140,10 +147,6 @@ elif test "$placer" = "mPL6"; then
     echo $cmd
     eval $cmd | tee --append ${log}
 
-    if [ -d $out_dir ]; then
-        rm -rf $out_dir
-    fi
-    mkdir -p $out_dir
     # mv *mPL-gp.pl $out_dir
     mv *mPL.pl $out_dir
     mv ${bench}_FP_dp.pl ${out_dir}/
@@ -168,10 +171,6 @@ elif test "$placer" = "mPL5"; then
     echo $cmd
     eval $cmd | tee --append ${log}
 
-    if [ -d $out_dir ]; then
-        rm -rf $out_dir
-    fi
-    mkdir -p $out_dir
     mv *mPL.pl $out_dir
     mv ${bench}_FP_dp.pl ${out_dir}/
 
@@ -186,15 +185,5 @@ echo "" | tee --append $log
 mv $log $out_dir
 
 
-# Generate a placement plot
-cmd="python3 ../utils/300_placement_plotter.py"
-cmd="$cmd --nodes ${bookshelf_dir}/${bench}.nodes --scl ${bookshelf_dir}/${bench}.scl"
-cmd="$cmd --pl ${out_dir}/${out_pl} --out out"
-echo $cmd
-eval $cmd
-gnuplot out.plt
-mv out.plt ${out_dir}/${bench}.${scenario}.${placer}.plt
-mv out.png ${out_dir}/${bench}.${scenario}.${placer}.png
-
 # Copy the placement solution
-cp ${out_dir}/${out_pl} ${out_dir}/${bench}.${placer}.solution.pl
+ln -s ${out_pl} ${out_dir}/${bench}.solution.pl

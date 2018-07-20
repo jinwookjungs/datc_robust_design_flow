@@ -24,30 +24,13 @@ do
         do
             for sizer in "${these_sizers[@]}"
             do
-                # Solution pl name
-                if test $placer = "Capo"; then
-                    solution_pl="${bench}_Capo.pl"
-                elif test $placer = "NTUPlace3"; then
-                    solution_pl="${bench}.ntup.pl"
-                elif test $placer = "ComPLx"; then
-                    solution_pl="${bench}_FP_dp.pl"
-                elif test $placer = "FastPlaceGP"; then
-                    solution_pl="${bench}_FP_dp.pl"
-                elif test $placer = "mPL6"; then
-                    solution_pl="${bench}-mPL.pl"
-                elif test $placer = "mPL5"; then
-                    solution_pl="${bench}-mPL.pl"
-                else
-                    echo "Invalid placer."
-                    exit
-                fi
-
+                pl=${bench}.${scenario}.${placer}.pl
                 out_name=${bench}.${scenario}.${placer}
 
                 if test $run_gs = false; then
                     out_name=${bench}.${scenario}.${placer}
                     bookshelf_dir=${floorplan_dir}/${bench}.${scenario}
-                    bookshelf_pl="${placement_dir}/${out_name}/${solution_pl}"
+                    bookshelf_pl="${placement_dir}/${out_name}/${pl}"
                 else
                     out_name=${bench}.${scenario}.${placer}.${sizer}
                     bookshelf_dir=${sizer_bookshelf_dir}/${out_name}

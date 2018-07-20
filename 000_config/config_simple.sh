@@ -16,7 +16,7 @@ utilization=0.1
 
 # Placement
 placers=(
-    "NTUPlace3"
+    "EhPlacer"
 )
 target_density=0.99
 

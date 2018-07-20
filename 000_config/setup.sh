@@ -121,6 +121,7 @@ declare -A scenario_set=(
 
 # Placers
 declare -a placer_set=(
+    "EhPlacer"
     "ComPLx"
     "NTUPlace3"
     "FastPlaceGP"
