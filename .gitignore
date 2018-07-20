@@ -2,6 +2,7 @@
 **/__pycache__
 **/*.pyc
 bin/unlicensed
+!bin/unlicensed/README.md
 bin/abc*
 !bin/README
 100_logic_synthesis/reports 
