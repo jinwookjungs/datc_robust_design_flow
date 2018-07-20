@@ -2,7 +2,7 @@
     File name      : bookshelf_to_def.py
     Author         : Jinwook Jung (jinwookjungs@gmail.com)
     Created on     : Tue 08 Aug 2017 02:15:18 PM KST
-    Last modified  : 2017-08-09 00:19:31
+    Last modified  : 2018-07-20 17:38:21
     Description    : Convert bookshelf files into a DEF.
 '''
 from __future__ import print_function, division
@@ -13,10 +13,9 @@ import verilog_parser
 import def_parser
 import lef_parser
 
-
 class Node:
     """ A bookshelf Node. """
-    def __init__(self, name, width=0.0, height=0.0, is_terminal=False, 
+    def __init__(self, name, width=0.0, height=0.0, is_terminal=False,
                     x=0.0, y=0.0, orient='N'):
         self.name = name
         self.width, self.height= width, height
@@ -88,7 +87,7 @@ class BookshelfToDEF:
         """ Extract .nodes, .pl, .scl names. """
         nodes, pl, scl = (None,)*3
         with open(src_aux, 'r') as f:
-            tokens = [t for l in f for t in l.split() 
+            tokens = [t for l in f for t in l.split()
                         if t.endswith(('.nodes', '.pl', '.scl'))]
             for t in tokens:
                 if t.endswith('.nodes'): nodes = t
@@ -204,7 +203,7 @@ class BookshelfToDEF:
                     sys.stderr.write("Unsupported bookshelf (scl) file.")
                     raise SystemExit(-1)
 
-                row_info = [None]*8 
+                row_info = [None]*8
                 while True:
                     l = next(lines_iter)
                     tokens = l.split()
@@ -301,12 +300,12 @@ class BookshelfToDEF:
             # Calculat the DIEAREA
             die_urx = urx_in_def if urx_in_def > die_urx else die_urx
             die_ury = ury_in_def if ury_in_def > die_ury else die_ury
-            
+
             height_in_def = r.height * dbu_per_micron * height_multiplier
 
             def_row_string.append(
                     "ROW %s_SITE_ROW_%d %s %d %d %s DO %d BY %d STEP %d %d ;" \
-                    % (site_name, i, site_name, llx_in_def, lly_in_def, 
+                    % (site_name, i, site_name, llx_in_def, lly_in_def,
                     r.site_orient, r.num_sites, 1, int(site_spacing_in_def), 0))
 
         f.write("DIEAREA ( 0 0 ) ( %d %d ) ; \n\n" % (die_urx, die_ury))
