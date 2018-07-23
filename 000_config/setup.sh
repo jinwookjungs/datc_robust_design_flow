@@ -15,7 +15,7 @@ case $suite in
     ;;
     example)  source ../000_config/config_example.sh
     ;;
-    *)        source ../000_config/config_example.sh
+    *)        source ../000_config/config_simple.sh
     ;;
 esac
 

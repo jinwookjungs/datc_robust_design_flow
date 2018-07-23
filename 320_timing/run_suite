@@ -3,6 +3,18 @@
 
 source ../000_config/setup.sh $1
 
+if [ ! -f iccad2015_evaluate_solution ]; then
+    ln -s ../bin/util/iccad2015_evaluate_solution_src/iccad2015_evaluate_solution
+fi
+if [ ! -f ICCAD15.parm ]; then
+    ln -s ../bin/util/iccad2015_evaluate_solution_src/ICCAD15.parm
+fi
+if [ ! -f PORT9.dat ]; then
+    ln -s ../bin/PORT9.dat
+fi
+if [ ! -f POWV9.dat ]; then
+    ln -s ../bin/POWV9.dat
+fi
 
 ICCAD_PARM='ICCAD15.parm'
 
@@ -96,3 +108,4 @@ do
 	done
 done
 
+rm -f iccad2015_evaluate_solution ICCAD15.parm PORT9.dat POWV9.dat
