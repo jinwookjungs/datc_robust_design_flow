@@ -649,7 +649,7 @@ if __name__ == '__main__':
     module = Module(opt.clock)
     module.read_verilog(opt.src)
     module.construct_circuit_graph()
-    module.circuit_graph.print_vertices_and_edges()
+    # module.circuit_graph.print_vertices_and_edges()
     module.print_stats()
     module.check_dangling_nets()
     module.remove_dangling_nets()
