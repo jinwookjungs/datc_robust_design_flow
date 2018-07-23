@@ -36,6 +36,8 @@ final_verilog=${final}/${bench}.v
 #-----------------------------------------------------------------------------
 echo Output will be save in $final_verilog
 
+echo ../bin/abc_precompiled/copyright.txt
+
 echo "***********************************************"
 echo "ABC scenario : \"$abc_script $map\""
 echo ""
