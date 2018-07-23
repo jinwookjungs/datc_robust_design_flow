@@ -29,6 +29,7 @@ timers=(
 # Gate Sizing
 run_gs=false
 sizers=(
+    "USizer2013"
 )
 
 # Global Routing
