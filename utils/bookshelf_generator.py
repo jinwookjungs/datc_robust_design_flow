@@ -41,7 +41,6 @@ class Bookshelf:
         self.verilog = verilog_parser.Module()
         self.verilog.read_verilog(self.src_v)
         self.verilog.construct_circuit_graph()
-        self.verilog.circuit_graph.print_vertices_and_edges()
         self.verilog.print_stats()
 
         print ("Parsing LEF: %s" % (self.src_lef))
