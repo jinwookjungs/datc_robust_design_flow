@@ -53,6 +53,7 @@ utilization=0.5
 
 # Placement
 placers=(
+    "EhPlacer"
     "ComPLx"
     "NTUPlace3"
     "FastPlaceGP"
@@ -85,4 +86,5 @@ tile_size=50
 num_layer=4
 adjustment=10
 safety=90
+
 

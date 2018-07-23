@@ -17,8 +17,7 @@ utilization=0.5
 
 # Placement
 placers=(
-    "NTUPlace3"
-    "ComPLx"
+    "EhPlacer"
 )
 target_density=0.8
 
@@ -28,9 +27,8 @@ timers=(
 )
 
 # Gate Sizing
-run_gs=true
+run_gs=false
 sizers=(
-    "USizer2013"
 )
 
 # Global Routing
