@@ -2,15 +2,13 @@
 
 # Benchmarks
 bench_suite=(
-    "ac97_ctrl"
-    "cordic2_ispd"
-    "vga_lcd"
+    "cordic_ispd"
 )
 
 # Logic Synthesis
 synth_scenarios=(
-    "resyn"
-    "compress2rs"
+    "lazyman"
+    "timing"
 )
 max_fanout=16
 
@@ -19,12 +17,9 @@ utilization=0.5
 
 # Placement
 placers=(
-    "ComPLx"
-    "NTUPlace3"
-    "FastPlaceGP"
-    "mPL6"
+    "EhPlacer"
 )
-target_density=0.75
+target_density=0.8
 
 # Timer
 timers=(
@@ -34,7 +29,6 @@ timers=(
 # Gate Sizing
 run_gs=false
 sizers=(
-    "USizer2013"
 )
 
 # Global Routing
@@ -42,7 +36,7 @@ global_routers=(
     "NCTUgr"
 )
 tile_size=30
-num_layer=4
+num_layer=6
 adjustment=10
 safety=90
 

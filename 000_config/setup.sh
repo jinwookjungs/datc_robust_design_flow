@@ -1,5 +1,5 @@
 #!/bin/bash
-# possible calls: run_suite [my_suite|tau|test]
+# possible calls: run_suite [my_suite|simple|test|all]
 
 suite=$1
 echo $0: using $1 benchmark suite
@@ -9,11 +9,9 @@ case $suite in
     ;;
     simple)   source ../000_config/config_simple.sh
     ;;
-    tau)      source ../000_config/config_tau.sh
-    ;;
     test)     source ../000_config/config_test.sh
     ;;
-    example)  source ../000_config/config_example.sh
+    all)      source ../000_config/config_all.sh
     ;;
     *)        source ../000_config/config_simple.sh
     ;;
