@@ -4,7 +4,8 @@
 bin/unlicensed/placer
 bin/unlicensed/router
 bin/unlicensed/sizer
-bin/abc_src
+bin/abc_src/src
+bin/abc_src/lib
 !bin/README
 100_logic_synthesis/reports 
 100_logic_synthesis/rundata 

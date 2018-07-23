@@ -37,7 +37,7 @@ final_verilog=${final}/${bench}.v
 echo Output will be save in $final_verilog
 
 echo "================================================================================"
-cat ../bin/abc_precompiled/copyright.txt
+cat ../bin/abc_src/copyright.txt
 echo "================================================================================"
 
 echo "***********************************************"
