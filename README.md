@@ -41,22 +41,25 @@ OpenDesign Flow Database consists of the following directory structure:
                           ./440_timing
     Global routing:       ./500_gr_bench_gen
                           ./510_global_route
+    Detaile routing:      ./600_detail_route
     Benchmarks            ./benchmarks
     Binaries              ./bin
     Utility scripts       ./utils
 
 To give a first shot, please try runnning:
 ```
-$ cd /path/to/rdf
-$ ./run.sh example
+$ git clone <this_repository>
+$ cd /path/to/datc_rdf
+$ ./run.sh 
 ```
 or
 ```
+$ git clone <this_repository>
 $ cd /path/to/rdf
 $ ./run.sh test
 ```
 which runs logic synthesis, placement, gate sizing, and global router with 
-a few designs.
+a few test designs.
 The result of each stage can be found under the stage's directory, like
 ```
 ./100_logic_synthesis/synthesis
@@ -71,7 +74,7 @@ can be customized using the configuration script located at `000_config`. We can
 specify logic synthesis scenario, utilization of chip floorplan, placer, gate 
 sizer, as well as global router. You can find an example flow configuration at:
 ```
-./000_config/config_example.sh
+./000_config/config.sh
 ```
 
 ## Benchmarks
@@ -125,7 +128,7 @@ utilization=0.5
 
 # Placement
 placers=(
-    "NTUPlace3"
+    "EhPlacer"
 )
 target_density=0.8
 
@@ -154,19 +157,20 @@ safety=90
 The **run_suite** script sets up and runs the synthesis expriments.  To launch a 
 batch job on the full set of TAU benchmarks, the script is invoked as: 
 ```
-run_suite tau
+run_suite all 
 ```
 
-The script lists available benchmarks in the bench_set array. Similarly, 
-possible synthesis "scenarios" are given in the scenario_set array. A user may 
-fill-out provided script variables my_suite and my_scenarios to run a customized 
-experiment as: run_suite my. (The test_suite and test_scenario variables in the 
-script illustrate the customized setting.)
+The script lists available benchmarks in the `bench_set` array. Similarly, 
+possible synthesis "scenarios" are given in the `scenario_set` array. A user may 
+fill-out the provided script variables `my_suite` and `my_scenarios` to run a 
+customized experiment as: `run_suite my_suite`. 
+(The `test_suite` and `test_scenario` variables in the script illustrate the 
+customized setting.)
 
-A "scenario" is currently defined by the ABC AIG optmization script,
+A `scenario` is currently defined by the ABC AIG optmization script,
 int mapping command, and a Boolean indicating the use of timing
-assertions (provided in the <benchmark>.timing file). The name aliases
-for available ABC scripts and mapping commands are stored in the ./bin/abc.rc 
+assertions (provided in the `<benchmark>.timing` file). The name aliases
+for available ABC scripts and mapping commands are stored in the `./bin/abc.rc`
 file.
 
 The resulting verilog netlist gets stores in
@@ -188,6 +192,7 @@ bookshelf/<benchmark>.<scenario>
 
 ## Placement
 Currently, the following placer binaries are available:
+- Eh?Placer
 - Capo
 - NTUPlace3
 - ComPLx
@@ -216,10 +221,10 @@ timing/<benchmark>.<scenario>.<placer>/out
 
 ## Global Routing
 You can generate the global routing benchmarks after placement, using the 
-"run_batch" at "500_gr_bench_gen" directory.
+`run_batch` at `500_gr_bench_gen` directory.
 
 After the benchmark generation, you can now run global routing at 
-"510_globla_route". Currently, "NCTUgr", "FastRoute", and "BFG-R" are available 
+`510_globla_route`. Currently, `NCTUgr`, `FastRoute`, and `BFG-R` are available 
 for global routing. After global routing, you can see the congestion map:
 
 ```
@@ -229,10 +234,10 @@ global_route/<benchmark>.<scenario>.<placer>.<router>/<benchmark>.Max_V.congesti
 
 
 ## Gate Sizing Flow
-To turn on the gate sizing flow, you need to set the **run_gs** flag in your 
+To turn on the gate sizing flow, you need to set the **`run_gs`** flag in your 
 flow configuration file. Note that the gate sizing takes very long time to run.
 It can also be executed by run_suite scripts, inside the following directories:
-    
+
     ./400_gate_sizing
     ./410_write_bookshelf
     ./420_legalization
@@ -253,4 +258,9 @@ DOI: https://doi.org/10.1145/2966986.2980074
 * Yih-Lang Li - National Chiao Tung University
 * [Jinwook Jung](mailto:jinwookjungs@gmail.com) - [KAIST](http://dtlab.kaist.ac.kr)
 * Gi-Joon Nam - IBM Thomas J. Watson Research Center
+
+
+## Former Contributers
+* Laleh Behjat - University of Calgary
+* Nima Karimpour Darav - University of Calgray
 

@@ -8,6 +8,8 @@ echo "|___/_/ \\_\\_| \\___| |_|_\\___/|_|  "
 
 echo "================================================================================"
 
+echo -e "\nLast updated: Mon Jul 23 11:37:24 KST 2018\n"
+
 if [ -z "$suite" ]; then
     echo "(I) Suite is set to \"simple\"."
     suite="simple"
