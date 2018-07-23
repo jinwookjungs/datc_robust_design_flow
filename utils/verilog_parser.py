@@ -6,13 +6,13 @@
     Description    : A Verilog parser (ISPD/ICCAD/TAU contest verilog format).
     Supported Verilog input format:
     module <circuit name> (
-        <input 1>, 
+        <input 1>,
         ...
         <input n>,
-        <output 1>, 
+        <output 1>,
         ...
         <output m>);
-        input <input 1>; 
+        input <input 1>;
         ...
         input <input i>;
         output <output 1>;
@@ -126,8 +126,34 @@ class Pin:
         self.net = None                 # An instance of Net
 
     def __str__(self):
-        return "name=%s, direction=%s, net_name=%s" \
+        return "Pin(name=%s, owner=%s, direction=%s, net_name=%s)" \
+               % (self.name, self.owner.name, self.direction, self.net_name)
+
+    @property
+    def owner_name(self):
+        return self.owner.name
+
+    @property
+    def full_name(self):
+        return "{}/{}".format(self.owner.name, self.name)
+
+
+class Port(Pin):
+    """ A module port. """
+    def __init__(self, name, direction):
+        super().__init__(name, direction, name, owner=None)
+
+    def __str__(self):
+        return "Port(name=%s, direction=%s, net_name=%s)" \
                % (self.name, self.direction, self.net_name)
+
+    @property
+    def owner_name(self):
+        return self.name
+
+    @property
+    def full_name(self):
+        return "{}".format(self.name)
 
 
 class Instance:
@@ -144,7 +170,7 @@ class Instance:
     def __str__(self):
         return "%s %s %s %s" % \
                (self.gate_type, self.name,
-                self.ipin_name_to_net, self.opin_name_to_net) 
+                self.ipin_name_to_net, self.opin_name_to_net)
 
     def get_instantiation_string(self):
         val = "%-8s %s ( " % (self.gate_type, self.name)
@@ -168,12 +194,6 @@ class Instance:
         return val
 
 
-class Port(Pin):
-    """ A module port. """
-    def __init__(self, name, direction):
-        super().__init__(name, direction, name, owner=None)
-
-
 class Wire:
     """ A net that connects a source pin to sink pin(s). """
     def __init__(self, name):
@@ -186,16 +206,17 @@ class Wire:
         return len(self.sinks) + (1 if self.source is not None else 0)
 
     def __str__(self):
-        return "%s (source=%s, #sinks=%d)" \
-                % (self.name, self.source, len(self.sinks))
+        sink_names = ' '.join([s.full_name for s in self.sinks])
+        return "Wire(%s): source=%s, sinks={%s}" \
+                % (self.name, self.source.full_name, sink_names)
 
 
 class Module(object):
     def __init__(self, clock_port=None):
         self.name = None
-        self.input_dict  = dict()                # List of Ports
+        self.input_dict  = dict()            # List of Ports
         self.output_dict = dict()
-        self.wire_dict   = dict()                 # List of Wires
+        self.wire_dict   = dict()            # List of Wires
         self.clock_port  = clock_port        # Clock port name
 
         self.instances = list()
@@ -229,6 +250,7 @@ class Module(object):
         if self.clock_port is not None:
             clk_net = self.circuit_graph.edge_map[self.clock_port]
             print("No of clock sinks  : %d" % (clk_net.cardinality))
+
         print("Maximum edge cardinality: %d (%s)" \
               % (max_cardinality[0], max_cardinality[1]))
         print("Average edge cardinality: %f" % (avg_cardinality))
@@ -258,8 +280,8 @@ class Module(object):
     def read_verilog(self, filename):
         """ Read verilog and get netlist info.
 
-        Read a given verilog file and generate the dictionary of the circuit
-        graph, as well as input/output/wire lists and a gate list.
+        Read a given verilog file and the create a circuit graph along with
+        the dictionaries of inputs/outputs/wires and instances.
         The given verilog must follow the ISPD/ICCAD/TAU specification.
         """
         # read file without blank lines
@@ -267,7 +289,7 @@ class Module(object):
             lines = [l for l in (line.strip() for line in f) if l]
         lines_iter = iter(lines)
 
-        # Get input, output, wire names 
+        # Get input, output, wire names
         inputs, outputs, wires = list(), list(), list()
 
         for line in lines_iter:
@@ -284,7 +306,7 @@ class Module(object):
             elif tokens[0] == 'input':
                 name = tokens[1].rstrip(';')  # strip semicolon
                 inputs.append(name)
-            
+
             elif tokens[0] == 'output':
                 name = tokens[1].rstrip(';')  # strip semicolon
                 outputs.append(name)
@@ -294,7 +316,7 @@ class Module(object):
                     name = tokens[1].rstrip(';')  # strip semicolon
                     wires.append(name)
                     line = next(lines_iter)
-                    if not line.startswith('wire '): 
+                    if not line.startswith('wire '):
                         break
                     else:
                         tokens = line.split()
@@ -304,7 +326,7 @@ class Module(object):
                 sys.stderr.write('Error: not a gate-level netlist.\n')
                 raise SystemExit(-1)
 
-            else: 
+            else:
                 continue
 
         # Gate instance extraction
@@ -334,7 +356,7 @@ class Module(object):
 
             else:
                 gate_type, inst_name = tokens[0], tokens[1]
-                self.instances.append(Instance(gate_type, inst_name)) 
+                self.instances.append(Instance(gate_type, inst_name))
 
                 it = iter(tokens[2:])
                 for (pin_name, net_name) in zip(it, it):
@@ -348,15 +370,35 @@ class Module(object):
         # Create tie cells
         self._create_tie_cells()
 
-        # Exclude inputs and outputs from wires
-        wires = list(set(wires) - set(inputs + outputs))
         self.input_dict  = {i : Port(i, 'input') for i in inputs}
         self.output_dict = {o : Port(o, 'output') for o in outputs}
+
+        # The dictionary wire_dict also includes input and output wires.
         self.wire_dict   = {w : Wire(w) for w in wires}
 
-        assert len(self.input_dict) > 0    
-        assert len(self.output_dict) > 0    
-        assert len(self.wire_dict) > 0    
+        # Populate member variales of wires
+        for k,v in self.input_dict.items():
+            wire = self.wire_dict[k]
+            wire.source = v
+
+        for k,v in self.output_dict.items():
+            wire = self.wire_dict[k]
+            wire.sinks.append(v)
+
+        for inst in self.instances:
+            for ipin in inst.ipins:
+                net_name = ipin.net_name
+                wire = self.wire_dict[net_name]
+                wire.sinks.append(ipin)
+
+            for opin in inst.opins:
+                net_name = opin.net_name
+                wire = self.wire_dict[net_name]
+                wire.source = opin
+
+        assert len(self.input_dict) > 0
+        assert len(self.output_dict) > 0
+        assert len(self.wire_dict) > 0
         assert len(self.instances) > 0
 
     def construct_circuit_graph(self):
@@ -376,15 +418,15 @@ class Module(object):
         #   Vertices: {PIs} + {POs} + {Instances}
         #   Edges:    {PI nets} + {PO nets} + {wires}
         for v in self.input_dict.values():
-            vertex = Vertex(v.name, v) 
+            vertex = Vertex(v.name, v)
             G.vertex_map[vertex.name] = vertex
 
         for v in self.output_dict.values():
-            vertex = Vertex(v.name, v) 
+            vertex = Vertex(v.name, v)
             G.vertex_map[vertex.name] = vertex
 
         for v in self.instances:
-            vertex = Vertex(v.name, v) 
+            vertex = Vertex(v.name, v)
             G.vertex_map[vertex.name] = vertex
 
         for port in self.input_dict.values():
@@ -403,21 +445,26 @@ class Module(object):
             vertex.ie_dict[edge.name] = edge
             edge.sink_dict[vertex.name] = vertex
 
+        ios = list(self.input_dict.keys()) + list(self.output_dict.keys())
         for w in self.wire_dict.values():
+            # Exclude input and output wires
+            if w.name in ios:
+                continue
+
             edge = HyperEdge(w.name, w)
             G.edge_map[edge.name] = edge
 
         # Connect vertices
         for i in self.instances:
             #print("Connecting vertices for %s" % (i.name))
-            vertex = G.vertex_map[i.name] 
+            vertex = G.vertex_map[i.name]
 
             for ipin in i.ipins:
                 #print("\tInput pin: %s (net=%s)" % (ipin.name, ipin.net_name))
                 net_name = ipin.net_name
                 edge = G.edge_map[net_name]
                 #print("\t\tEdge found: %s" % (edge.name))
-                
+
                 ipin.net = edge
                 i.ipin_name_to_net[ipin.name] = edge
 
@@ -513,6 +560,9 @@ class Module(object):
         outputs = [o for o in self.output_dict.keys()]
         wires = [w for w in self.wire_dict.keys() if w != self.clock_port]
 
+        # Exclude inputs and outputs from wires
+        wires = list(set(wires) - set(inputs + outputs))
+
         inputs  = sorted(inputs)
         outputs = sorted(outputs)
         wires   = sorted(wires)
@@ -563,7 +613,7 @@ class Module(object):
             [f.write("set_input_delay 0.0 [get_ports %s] -clock mclk\n" % (i)) for i in inputs]
             f.write("\n")
             f.write('# input drivers\n')
-            [f.write("set_driving_cell -lib_cell in01f80 -pin o [get_ports %s]" 
+            [f.write("set_driving_cell -lib_cell in01f80 -pin o [get_ports %s]"
                      " -input_transition_fall 80.0 -input_transition_rise 80.0\n" % (i)) for i in inputs]
             f.write("\n")
             f.write('# output delays\n')
@@ -574,7 +624,7 @@ class Module(object):
 
 
 def extract_pin_and_net(token):
-    """ token should be .PIN(NET), or .PIN(NET) """ 
+    """ token should be .PIN(NET), or .PIN(NET) """
     # replace .,() with blank
     for c in ('.', ',', '(', ')'):
         token = token.replace(c, ' ')
@@ -599,7 +649,7 @@ if __name__ == '__main__':
     module = Module(opt.clock)
     module.read_verilog(opt.src)
     module.construct_circuit_graph()
-    #module.circuit_graph.print_vertices_and_edges()
+    module.circuit_graph.print_vertices_and_edges()
     module.print_stats()
     module.check_dangling_nets()
     module.remove_dangling_nets()

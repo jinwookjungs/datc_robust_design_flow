@@ -12,13 +12,13 @@ synth_scenarios=(
 max_fanout=16
 
 # Floorplanning
-utilization=0.1
+utilization=0.01
 
 # Placement
 placers=(
     "EhPlacer"
 )
-target_density=0.99
+target_density=0.1
 
 # Timer
 timers=(

@@ -17,8 +17,8 @@ def parse_cl():
 
     def utilization(x):
         x = float(x)
-        if x < 0.1 or x > 0.99:
-            raise ArgumentTypeError("Utilization(%r) not in [0.1, 0.99]." % (x))
+        if x < 0.01 or x > 0.99:
+            raise ArgumentTypeError("Utilization(%r) not in [0.01, 0.99]." % (x))
         return x
 
     parser = argparse.ArgumentParser(
@@ -31,7 +31,7 @@ def parse_cl():
 
     parser.add_argument('--util', type=utilization, dest='utilization', 
                         default=0.7, 
-                        help="Utilization (in 0.1, 0.99).")
+                        help="Utilization (in 0.01, 0.99).")
 
     parser.add_argument('-o', dest='dest_name', help="Base name of output files")
 
@@ -100,3 +100,4 @@ if __name__ == '__main__':
     bookshelf.create_bookshelf_scl(dest)
     bookshelf.create_bookshelf_pl(dest)
     bookshelf.write_bookshelf_aux(dest)
+

@@ -3,6 +3,9 @@
 
 source ../000_config/setup.sh $1
 
+ln -s ../bin/PORT9.dat
+ln -s ../bin/POST9.dat
+ln -s ../bin/POWV9.dat
 
 for bench in "${these_benches[@]}"
 do
@@ -88,3 +91,5 @@ do
         done
     done
 done
+
+rm -f PORT9.dat POST9.dat POWV9.dat

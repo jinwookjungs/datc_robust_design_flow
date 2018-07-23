@@ -41,6 +41,7 @@ class Bookshelf:
         self.verilog = verilog_parser.Module()
         self.verilog.read_verilog(self.src_v)
         self.verilog.construct_circuit_graph()
+        self.verilog.circuit_graph.print_vertices_and_edges()
         self.verilog.print_stats()
 
         print ("Parsing LEF: %s" % (self.src_lef))
@@ -123,13 +124,13 @@ class Bookshelf:
         outputs = [_ for _ in self.verilog.output_dict.values()]
         wires   = [_ for _ in self.verilog.wire_dict.values()]
 
-        nets = inputs + outputs + wires
+        nets = wires
         f.write("NumNets\t:\t%d\n" % (len(nets)))
 
         # net dictionary - key: name, val: list( [name, I|O, x_offset, y_offset] )
-        net_dict = {n.name : [[n.name, 'O', 0.0, 0.0]] for n in inputs}
-        net_dict.update({n.name : [[n.name, 'I', 0.0, 0.0]] for n in outputs})
-        net_dict.update({n.name : list() for n in wires} )
+        net_dict = {w.name : list() for w in wires}
+        [net_dict[p.name].append([p.name, 'O', 0.0, 0.0]) for p in inputs]
+        [net_dict[p.name].append([p.name, 'I', 0.0, 0.0]) for p in outputs]
 
         num_pins = len(inputs + outputs)
 
@@ -151,7 +152,7 @@ class Bookshelf:
                                    + list(g.opin_name_to_net.items()))
 
             for pin_name, net in pin_name_to_net.items():
-                # FIXME
+                # FIXME: Clock net is excluded
                 if net.name == self.clock_port:
                     continue
                 num_pins += 1

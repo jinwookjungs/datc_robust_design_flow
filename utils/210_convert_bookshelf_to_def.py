@@ -46,7 +46,7 @@ class NodePin(Node):
         "  - %s + NET %s\n" \
         "    + DIRECTION %s\n" \
         "    + FIXED ( %d %d ) %s\n" \
-        "        + LAYER metal3 ( 0 0 ) ( 100 100 ) ;" % \
+        "        + LAYER metal3 ( 0 0 ) ( 380 380 ) ;" % \
         (self.name, self.name, self.direction, x, y, self.orient)
 
 
@@ -77,7 +77,8 @@ class BookshelfRow:
 
 class BookshelfToDEF:
     def __init__(self, src_lef, src_v, src_aux):
-        self.node_dict, self.row_list = dict(), list()
+        self.node_dict, self.nets = dict(), list()
+        self.row_list = list()
 
         self.src_lef, self.src_v = src_lef, src_v
         self.src_aux = src_aux
@@ -131,13 +132,31 @@ class BookshelfToDEF:
             for i in verilog.instances:
                 node_dict[i.name] = NodeComponent(i.name, i.gate_type)
 
+        def generate_nets(verilog, nets):
+            verilog.circuit_graph.print_vertices_and_edges()
+            for w in verilog.wire_dict.values():
+                try:
+                    pins = [(w.source.owner.name, w.source.name)]
+                except AttributeError:
+                    pins = [("PIN", w.source.name)]
+
+                for s in w.sinks:
+                    try:
+                        pins.append((s.owner.name, s.name))
+                    except AttributeError:
+                        pins.append(("PIN", s.name))
+
+                nets.append(def_parser.DefNet(w.name, pins))
+
         print ("Parsing verilog: %s" % (self.src_v))
         self.verilog = verilog_parser.Module()
         self.verilog.read_verilog(self.src_v)
         self.verilog.construct_circuit_graph()
         self.verilog.print_stats()
         self.verilog.check_dangling_nets()
+
         generate_node_dict(self.verilog, self.node_dict)
+        generate_nets(self.verilog, self.nets)
 
         print ("Parsing LEF: %s" % (self.src_lef))
         self.lef = lef_parser.Lef()
@@ -177,7 +196,8 @@ class BookshelfToDEF:
             try:
                 n = self.node_dict[name]
             except KeyError:
-                print(self.node_dict)
+                sys.stderr.write("Key Error: {}\n".format(name))
+                sys.stderr.write(str(self.node_dict) + "\n")
                 raise SystemExit(-1)
 
             n.width, n.height = w, h
@@ -297,7 +317,7 @@ class BookshelfToDEF:
             urx_in_def = llx_in_def + (width_in_def * r.num_sites)
             ury_in_def = lly_in_def + (height_in_def * 1)
 
-            # Calculat the DIEAREA
+            # Calculate the DIEAREA
             die_urx = urx_in_def if urx_in_def > die_urx else die_urx
             die_ury = ury_in_def if ury_in_def > die_ury else die_ury
 
@@ -308,15 +328,15 @@ class BookshelfToDEF:
                     % (site_name, i, site_name, llx_in_def, lly_in_def,
                     r.site_orient, r.num_sites, 1, int(site_spacing_in_def), 0))
 
-        f.write("DIEAREA ( 0 0 ) ( %d %d ) ; \n\n" % (die_urx, die_ury))
+        f.write("DIEAREA ( 0 0 ) ( %d %d ) ;\n\n" % (die_urx, die_ury))
         f.write('\n'.join(def_row_string))
         f.write("\n\n")
 
-        # PINS
         node_list = list(self.node_dict.values())
         pins       = [n for n in node_list if n.__class__ is NodePin]
         components = [n for n in node_list if n.__class__ is NodeComponent]
 
+        # PINS
         f.write("PINS %d ;\n" % (len(pins)))
         [f.write(p.get_def_string(x_scaler, y_scaler) + "\n") for p in pins]
         f.write("END PINS\n\n")
@@ -324,8 +344,13 @@ class BookshelfToDEF:
         # COMPONENTS
         f.write("COMPONENTS %d ;\n" % (len(components)))
         [f.write(c.get_def_string(x_scaler, y_scaler) + "\n") for c in components]
-
         f.write("END COMPONENTS\n\n")
+
+        # NETS
+        f.write("NETS %d ;\n" % (len(self.nets)))
+        [f.write("{}\n".format(_)) for _ in self.nets]
+        f.write("END NETS\n\n")
+
         f.write('END DESIGN\n')
         f.close()
 

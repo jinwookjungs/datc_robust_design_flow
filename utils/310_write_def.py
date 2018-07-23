@@ -95,6 +95,11 @@ def write_def(dest_def, src_lef, src_def, src_v, src_pl):
         new_def.components.append(
                 def_parser.DefComponent(name, gate_type, is_fixed, x, y, orient))
 
+#    for w in the_verilog.wire_dict.values():
+#        pins = [w.source.full_name]
+#        pins.extend([s.full_name for s in w.sinks])
+#        new_def.nets.append(def_parser.DefNet(w.name, pins))
+
     new_def.print_stats()
     new_def.write_def(dest_def)
 

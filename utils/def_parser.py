@@ -229,8 +229,8 @@ class Def(object):
 
             # Write nets
             f.write("NETS %d ;\n" % (len(self.nets)))
-            sorted_nets = sorted(self.nets, key=lambda n : n.name)
-            [f.write("{}\n".format(n)) for n in sorted_nets]
+            # sorted_nets = sorted(self.nets, key=lambda n : n.name)
+            [f.write("{}\n".format(n)) for n in self.nets]
             f.write('END NETS\n\n')
 
             f.write('END DESIGN\n\n')
@@ -248,6 +248,7 @@ class Def(object):
         print ("Number of components   : %d" % (len(self.components)))
         print ("Number of big_blocks   : %d" % (len(self.big_blocks)))
         print ("Number of pins         : %d" % (len(self.pins)))
+        print ("Number of nets         : %d" % (len(self.nets)))
         print ("==================================================\n")
 
 
@@ -360,3 +361,4 @@ if __name__ == '__main__':
     the_def.read_def(src)
     the_def.print_stats()
     the_def.write_def("test")
+
