@@ -133,7 +133,6 @@ class BookshelfToDEF:
                 node_dict[i.name] = NodeComponent(i.name, i.gate_type)
 
         def generate_nets(verilog, nets):
-            verilog.circuit_graph.print_vertices_and_edges()
             for w in verilog.wire_dict.values():
                 try:
                     pins = [(w.source.owner.name, w.source.name)]
