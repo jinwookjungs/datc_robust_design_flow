@@ -62,7 +62,7 @@ def change_cell_name(token):
     elif size.startswith('Y'):
         size = "m%02d" % (size_dict[int(size[1:])])
     elif size.startswith('Z'):
-        size = "f%02d" % (siez_dict[int(size[1:])]) 
+        size = "f%02d" % (siez_dict[int(size[1:])])
     else:   # it must be a block
         size = size
 
@@ -159,10 +159,10 @@ def change_verilog(src, dest):
             # remove clock buffer
             elif tokens[0].startswith('CLKBUF'):
                 continue
-          
+
             # Change dff cells
             elif tokens[0].startswith('DFF'):
-                #  0   1   2    3       4       5       6 
+                #  0   1   2    3       4       5       6
                 # DFF INST ( .D(net), .Q(net), .CK(net) );
                 pin_string = tokens[3:-1]
                 pins = change_pin_name(pin_string, 'dff')

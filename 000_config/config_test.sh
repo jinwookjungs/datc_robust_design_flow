@@ -2,22 +2,23 @@
 
 # Benchmarks
 bench_suite=(
-    "cordic_ispd"
+    "ac97_ctrl"
+    "cordic2_ispd"
 )
 
 # Logic Synthesis
 synth_scenarios=(
-    "lazyman"
     "timing"
 )
 max_fanout=16
 
 # Floorplanning
-utilization=0.5
+utilization=0.6
 
 # Placement
 placers=(
-    "EhPlacer"
+    "ComPLx"
+    "NTUPlace3"
 )
 target_density=0.8
 
@@ -36,8 +37,14 @@ sizers=(
 global_routers=(
     "NCTUgr"
 )
+
 tile_size=30
-num_layer=6
+num_layer=8
 adjustment=10
 safety=90
+
+# Detailed Routing
+detail_routers=(
+    "NCTUdr"
+)
 

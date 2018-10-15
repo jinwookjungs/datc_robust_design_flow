@@ -18,7 +18,7 @@ class LefSite(object):
         self.site_class = site_class
         self.width = width
         self.height = height
-    
+
     def __str__(self):
         return ("%s %s %s (%.4f %.4f)" % \
                 (self.name, self.symmetry, self.site_class, \
@@ -43,14 +43,14 @@ class LefMacro(object):
 class LefRectilinearMacro(LefMacro):
     """ Lef rectilinear macro """
     def __init__(self, name, width, height, macro_class, pin_list, obses):
-        super(self.__class__, self).__init__(name, width, height, 
+        super(self.__class__, self).__init__(name, width, height,
                                              macro_class, pin_list)
         self.obses = obses  # list of (llx, lly, widthidth, height)
 
     def __str__(self):
         pin_str = '\n'.join([p.__str__() for p in self.pin_list])
         obs_str = ""
-        
+
         for obs in self.obses:
             obs_str += ' '.join([str(i) for i in self.obses])
 
@@ -103,37 +103,40 @@ class Lef(object):
         print ("Number of sites  : %d" % (len(self.sites)))
         print ("Number of macros : %d" % (len(self.macros)))
         print ("")
-    
+
     def extract_lef_macro(self, lines_iter, name):
-        """ Extract macro information 
-       
+        """ Extract macro information
+
         Input: Line iterator and macro name
         Output: A macro instance (LefMacro/LefRectilinearMacro)
         """
         pin_list = list()
         obses = list()  # obses will be a list of (llx, lly, w, h)
-        while True:    
-            tokens = next(lines_iter).split()
+
+        while True:
+            line = next(lines_iter)
+            print(line)
+            tokens = line.split()
             if tokens[0] == 'END':
                 try:
-                    if tokens[1] == name: 
+                    if tokens[1] == name:
                         break
                 except IndexError:
-                    sys.stderr.write("(E) Parsing error (END): %s\n", line)
+                    sys.stderr.write("(E) Parsing error (END): %s\n", tokens)
                     sys.exit(-1)
 
             elif tokens[0] == 'CLASS':
                 try:
                     macro_class = tokens[1]
                 except IndexError:
-                    sys.stderr.write("(E) Parsing error (CLASS): %s\n", line)
+                    sys.stderr.write("(E) Parsing error (CLASS): %s\n", tokens)
                     sys.exit(-1)
 
             elif tokens[0] == 'SIZE':
                 try:
                     width, height = float(tokens[1]), float(tokens[3])
                 except IndexError:
-                    sys.stderr.write("(E) Parsing error (SIZE): %s\n", line)
+                    sys.stderr.write("(E) Parsing error (SIZE): %s\n", tokens)
                     sys.exit(-1)
 
             elif tokens[0] == 'PIN':
@@ -173,8 +176,6 @@ class Lef(object):
             elif tokens[0] == 'OBS':
                 # OBS extraction
                 tokens = next(lines_iter).split()
-                assert tokens[0] == 'LAYER' \
-                       and tokens[1] == self.m1_layer_name
 
                 while True:
                     tokens = next(lines_iter).split()
@@ -188,11 +189,11 @@ class Lef(object):
             return LefMacro(name, width, height, macro_class, pin_list)
 
         else:
-            return LefRectilinearMacro(name, width, height, 
+            return LefRectilinearMacro(name, width, height,
                                        macro_class, pin_list, obses)
 
     def read_lef(self, file_name):
-        """ Parse lef and get size of each gate. 
+        """ Parse lef and get size of each gate.
 
         Input: File name
         Output: Site, Macro list
@@ -225,7 +226,7 @@ class Lef(object):
             elif tokens[0] == 'LAYER':
                 layer_name = tokens[1]
                 tokens = next(lines_iter).split()
-                
+
                 if tokens[0] == 'TYPE':
                     while True:
                         # find pitch
@@ -257,10 +258,10 @@ class Lef(object):
 
                     except IndexError:
                         pass
-                self.sites.append( 
+                self.sites.append(
                         LefSite(site_name, symmetry, site_class, width, height))
                 # print ("\tLEF Site: %s" % (sites[0]))
-            
+
             # MACRO definition
             elif tokens[0] == 'MACRO':
                 gate_name = tokens[1]    # Gate name

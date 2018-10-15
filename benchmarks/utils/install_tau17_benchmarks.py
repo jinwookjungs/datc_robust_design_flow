@@ -12,7 +12,7 @@ import requests, subprocess, os, sys
 def download_from_google_site(url, dest):
     response = requests.get(url, stream=True)
     print("%.3f MB" % (len(response.content) / 1024.0 / 1024), flush=True)
-    save_response_content(response, dest)    
+    save_response_content(response, dest)
 
 
 # Source: https://stackoverflow.com/questions/38511444/python-download-files-from-google-drive-using-url
@@ -27,7 +27,7 @@ def download_from_google_drive(id, dest):
         response = session.get(url, params = params, stream = True)
 
     print("%.3f MB" % (len(response.content) / 1024.0 / 1024), flush=True)
-    save_response_content(response, dest)    
+    save_response_content(response, dest)
 
 
 def get_confirm_token(response):
@@ -63,7 +63,7 @@ def map_latches(verilog):
 
 
 def change_iccad_cell_names(src, dest):
-    import change_cell_names 
+    import change_cell_names
     change_cell_names.change_verilog(src, dest)
 
 
@@ -71,45 +71,41 @@ def create_sdc(bench_name, timing, sdc):
     import convert_timing_to_sdc
     convert_timing_to_sdc.convert(bench_name, timing, sdc, clock_port="clk")
 
-tau17_benchmarks = ( \
-    ("usb_funct",             "https://sites.google.com/site/taucontest2017/resources/usb_funct.tar.gz?attredirects=0"),
-    ("crc32d16N",             "https://sites.google.com/site/taucontest2017/resources/crc32d16N.tar.gz?attredirects=0"),
-    ("ac97_ctrl",             "https://sites.google.com/site/taucontest2017/resources/ac97_ctrl.tar.gz?attredirects=0"),
-    ("aes_core",              "https://sites.google.com/site/taucontest2017/resources/aes_core.tar.gz?attredirects=0"),
-    ("des_perf",              "https://sites.google.com/site/taucontest2017/resources/des_perf.tar.gz?attredirects=0"),
-    ("pci_bridge32",          "https://sites.google.com/site/taucontest2017/resources/pci_bridge32.tar.gz?attredirects=0"),
-    ("systemcaes",            "https://sites.google.com/site/taucontest2017/resources/systemcaes.tar.gz?attredirects=0"),
-    ("systemcdes",            "https://sites.google.com/site/taucontest2017/resources/systemcdes.tar.gz?attredirects=0"),
-    ("tv80",                  "https://sites.google.com/site/taucontest2017/resources/tv80.tar.gz?attredirects=0"),
-    ("vga_lcd",               "https://drive.google.com/file/d/0B7cpBRIFsGtrM3NJblI2ZkE3Qlk/view?usp=sharing"),
-    ("wb_dma",                "https://sites.google.com/site/taucontest2017/resources/wb_dma.tar.gz?attredirects=0"),
-    ("pci_bridge32",          "https://sites.google.com/site/taucontest2017/resources/pci_bridge32.tar.gz?attredirects=0"),
-    ("cordic_ispd",           "https://sites.google.com/site/taucontest2017/resources/cordic_ispd.tar.gz?attredirects=0"),
-    ("des_perf_ispd",         "https://drive.google.com/file/d/0B7cpBRIFsGtrQ1cwc1pNYVNEbmc/view?usp=sharing"),
-    ("edit_dist_ispd",        "https://drive.google.com/file/d/0B7cpBRIFsGtrbklXdHUweEpUdkk/view?usp=sharing"),
-    ("edit_dist2_ispd",       "https://drive.google.com/file/d/0B7cpBRIFsGtrUkl6YTVKcWNnYkU/view?usp=sharing"),
-    ("matrix_mult_ispd",      "https://drive.google.com/file/d/0B7cpBRIFsGtrVEtlNXI3aGpYOWs/view?usp=sharing"),
-    ("cordic2_ispd",          "https://sites.google.com/site/taucontest2017/resources/cordic2_ispd.tar.gz?attredirects=0"),
-    ("fft_ispd",              "https://sites.google.com/site/taucontest2017/resources/fft_ispd.tar.gz?attredirects=0"),
-    ("usb_phy_ispd",          "https://sites.google.com/site/taucontest2017/resources/usb_phy_ispd.tar.gz?attredirects=0"),
-    ("b19_iccad",             "https://drive.google.com/open?id=0B7cpBRIFsGtrcW1Nd2FybzZiRHc"),
-    ("leon2_iccad",           "https://drive.google.com/open?id=0B7cpBRIFsGtrVVo4eDk5RjNIamM"),
-    ("leon3mp_iccad",         "https://drive.google.com/open?id=0B7cpBRIFsGtrQlhPdHZ3bGdKM0E"),
-    ("mgc_edit_dist_iccad",   "https://drive.google.com/open?id=0B7cpBRIFsGtrbmVIa3laMk9udHc"),
-    ("mgc_matrix_mult_iccad", "https://drive.google.com/open?id=0B7cpBRIFsGtrYWFodFVXejJVUXc"),
-    ("netcard_iccad",         "https://drive.google.com/open?id=0B7cpBRIFsGtrbGxGQzUtWlBPb1k"),
-    ("vga_lcd_iccad",         "https://drive.google.com/open?id=0B7cpBRIFsGtrdmFpUjNaZVVZTDA"),
-)
-#
 #tau17_benchmarks = ( \
 #    ("usb_funct",             "https://sites.google.com/site/taucontest2017/resources/usb_funct.tar.gz?attredirects=0"),
+#    ("crc32d16N",             "https://sites.google.com/site/taucontest2017/resources/crc32d16N.tar.gz?attredirects=0"),
 #    ("ac97_ctrl",             "https://sites.google.com/site/taucontest2017/resources/ac97_ctrl.tar.gz?attredirects=0"),
+#    ("aes_core",              "https://sites.google.com/site/taucontest2017/resources/aes_core.tar.gz?attredirects=0"),
+#    ("des_perf",              "https://sites.google.com/site/taucontest2017/resources/des_perf.tar.gz?attredirects=0"),
+#    ("pci_bridge32",          "https://sites.google.com/site/taucontest2017/resources/pci_bridge32.tar.gz?attredirects=0"),
+#    ("systemcaes",            "https://sites.google.com/site/taucontest2017/resources/systemcaes.tar.gz?attredirects=0"),
+#    ("systemcdes",            "https://sites.google.com/site/taucontest2017/resources/systemcdes.tar.gz?attredirects=0"),
+#    ("tv80",                  "https://sites.google.com/site/taucontest2017/resources/tv80.tar.gz?attredirects=0"),
+#    ("vga_lcd",               "https://drive.google.com/file/d/0B7cpBRIFsGtrM3NJblI2ZkE3Qlk/view?usp=sharing"),
+#    ("wb_dma",                "https://sites.google.com/site/taucontest2017/resources/wb_dma.tar.gz?attredirects=0"),
+#    ("pci_bridge32",          "https://sites.google.com/site/taucontest2017/resources/pci_bridge32.tar.gz?attredirects=0"),
 #    ("cordic_ispd",           "https://sites.google.com/site/taucontest2017/resources/cordic_ispd.tar.gz?attredirects=0"),
 #    ("des_perf_ispd",         "https://drive.google.com/file/d/0B7cpBRIFsGtrQ1cwc1pNYVNEbmc/view?usp=sharing"),
+#    ("edit_dist_ispd",        "https://drive.google.com/file/d/0B7cpBRIFsGtrbklXdHUweEpUdkk/view?usp=sharing"),
+#    ("edit_dist2_ispd",       "https://drive.google.com/file/d/0B7cpBRIFsGtrUkl6YTVKcWNnYkU/view?usp=sharing"),
+#    ("matrix_mult_ispd",      "https://drive.google.com/file/d/0B7cpBRIFsGtrVEtlNXI3aGpYOWs/view?usp=sharing"),
+#    ("cordic2_ispd",          "https://sites.google.com/site/taucontest2017/resources/cordic2_ispd.tar.gz?attredirects=0"),
+#    ("fft_ispd",              "https://sites.google.com/site/taucontest2017/resources/fft_ispd.tar.gz?attredirects=0"),
+#    ("usb_phy_ispd",          "https://sites.google.com/site/taucontest2017/resources/usb_phy_ispd.tar.gz?attredirects=0"),
 #    ("b19_iccad",             "https://drive.google.com/open?id=0B7cpBRIFsGtrcW1Nd2FybzZiRHc"),
+#    ("leon2_iccad",           "https://drive.google.com/open?id=0B7cpBRIFsGtrVVo4eDk5RjNIamM"),
+#    ("leon3mp_iccad",         "https://drive.google.com/open?id=0B7cpBRIFsGtrQlhPdHZ3bGdKM0E"),
+#    ("mgc_edit_dist_iccad",   "https://drive.google.com/open?id=0B7cpBRIFsGtrbmVIa3laMk9udHc"),
+#    ("mgc_matrix_mult_iccad", "https://drive.google.com/open?id=0B7cpBRIFsGtrYWFodFVXejJVUXc"),
+#    ("netcard_iccad",         "https://drive.google.com/open?id=0B7cpBRIFsGtrbGxGQzUtWlBPb1k"),
 #    ("vga_lcd_iccad",         "https://drive.google.com/open?id=0B7cpBRIFsGtrdmFpUjNaZVVZTDA"),
 #)
-#
+
+tau17_benchmarks = ( \
+    ("usb_funct",             "https://sites.google.com/site/taucontest2017/resources/usb_funct.tar.gz?attredirects=0"),
+    ("ac97_ctrl",             "https://sites.google.com/site/taucontest2017/resources/ac97_ctrl.tar.gz?attredirects=0"),
+)
+
 
 
 def download_benchmarks(benchmarks):
@@ -228,14 +224,14 @@ if __name__ == "__main__":
     def parse_cl():
         import argparse
         parser = argparse.ArgumentParser(description='')
-        parser.add_argument('--remove_unnecessary_files', 
+        parser.add_argument('--remove_unnecessary_files',
                             action="store_true", default=False)
         return parser.parse_args()
 
     opt = parse_cl()
 
     def run_shell_cmd(cmd):
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, 
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE, shell=True)
         p.communicate()
         p.wait()

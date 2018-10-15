@@ -23,6 +23,7 @@ declare -a these_placers=("${placers[@]}")
 declare -a these_timers=("${timers[@]}")
 declare -a these_sizers=("${sizers[@]}")
 declare -a these_grouters=("${global_routers[@]}")
+declare -a these_drouters=("${detail_routers[@]}")
 
 clock_name='clk'
 
@@ -43,6 +44,8 @@ mkdir -p ../430_write_def/def
 mkdir -p ../440_timing/timing
 mkdir -p ../500_gr_bench_gen/gr_bench
 mkdir -p ../510_global_route/global_route
+mkdir -p ../600_dr_benchmark_checker/lefdef
+mkdir -p ../610_detail_route/detail_route
 
 bench_dir=`cd ../benchmarks; pwd -P`
 logic_synth_dir=`cd ../100_logic_synthesis/synthesis; pwd -P`
@@ -58,7 +61,9 @@ sizer_legalization_dir=`cd ../420_legalization/placement; pwd -P`
 sizer_def_dir=`cd ../430_write_def/def; pwd -P`
 sizer_timing_dir=`cd ../440_timing/timing; pwd -P`
 gr_bench_dir=`cd ../500_gr_bench_gen/gr_bench; pwd -P`
-globl_route_dir=`cd ../510_global_route/global_route; pwd -P`
+global_route_dir=`cd ../510_global_route/global_route; pwd -P`
+dr_lefdef_dir=`cd ../600_dr_benchmark_checker/lefdef; pwd -P`
+detail_route_dir=`cd ../610_detail_route/detail_route; pwd -P`
 
 # Available Benchmarks
 declare -A bench_set=(
@@ -149,6 +154,11 @@ declare -a grouter_set=(
     "BFG-R"
 )
 
+# Detail Routers
+declare -a drouter_set=(
+    "NCTUdr"
+)
+
 # Checking...
 for benchkey in "${these_benches[@]}"
 do
@@ -200,6 +210,15 @@ do
     grep -qwe "$grouter" <(echo "${grouter_set[@]}")
     if [ $? -eq 1 ]; then
         echo "Error: global router $grouter does not exist"
+        exit 6
+    fi
+done
+
+for drouter in "${these_drouters[@]}"
+do
+    grep -qwe "$drouter" <(echo "${drouter_set[@]}")
+    if [ $? -eq 1 ]; then
+        echo "Error: detailed router $drouter does not exist"
         exit 6
     fi
 done

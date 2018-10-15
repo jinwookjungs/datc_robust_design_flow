@@ -30,11 +30,13 @@ declare -a directories=(
 `cd 440_timing; pwd -P`
 `cd 500_gr_bench_gen; pwd -P`
 `cd 510_global_route; pwd -P`
+`cd 600_dr_benchmark_checker; pwd -P`
+`cd 610_detail_route; pwd -P`
 )
 
 for directory in "${directories[@]}"
 do
-    echo $directory
+    echo "Current directory: $directory"
     cd $directory
     make $suite
 done

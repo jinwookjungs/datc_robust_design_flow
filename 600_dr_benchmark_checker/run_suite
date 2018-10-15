@@ -1,0 +1,39 @@
+#!/bin/bash
+# possible calls: run_suite [my_suite|tau|test]
+
+source ../000_config/setup.sh $1
+
+lef_name="../benchmarks/libs/open_design_flow.lef"
+
+for bench in "${these_benches[@]}"
+do
+	for scenario in "${these_scenarios[@]}"
+	do
+        for placer in "${these_placers[@]}"
+        do
+            for sizer in "${these_sizers[@]}"
+            do
+                if test $run_gs = false; then
+                    base_name=${bench}.${scenario}.${placer}
+                    def_name="${write_def_dir}/${bench}.${scenario}.${placer}/${bench}.def"
+                else
+                    base_name=${bench}.${scenario}.${placer}.${sizer}
+                    def_name="${sizer_def_dir}/${bench}.${scenario}.${placer}.${sizer}/${bench}.def"
+                fi
+
+                out_dir="lefdef/${base_name}"
+                if [ -d "$out_dir" ]; then
+                    rm -rf $out_dir
+                fi
+                mkdir -p $out_dir
+
+                ../bin/NCTU-DR/DR_benchmark_checker -lef $lef_name -def $def_name \
+                                                    -lef_out ${out_dir}/final.lef -def_out ${out_dir}/${bench}.def \
+                | tee ${out_dir}/dr_checker.log.txt
+            done
+        done
+    done
+done
+
+rm -f Lef Def
+
