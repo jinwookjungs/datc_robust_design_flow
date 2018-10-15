@@ -1,7 +1,7 @@
 # DATC Robust Design Flow
 
 ## Notes
-Last updated on Thu Jul  5 08:57:10 KST 2018.
+**Last updated**: Mon Oct 15 14:48:42 KST 2018
 
 This repository is currently **under construction**.
 Also, we are currently **not** providing the individual point tool binaries.
@@ -41,32 +41,29 @@ OpenDesign Flow Database consists of the following directory structure:
                           ./440_timing
     Global routing:       ./500_gr_bench_gen
                           ./510_global_route
-    Detaile routing:      ./600_detail_route
+    Detaile routing:      ./600_dr_benchmark_checker
+                          ./610_detail_route
     Benchmarks            ./benchmarks
     Binaries              ./bin
     Utility scripts       ./utils
 
 To give a first shot, please try runnning:
 ```
+$ cd /path/to/your/workspace
 $ git clone <this_repository>
-$ cd /path/to/datc_rdf
-$ ./run.sh 
-```
-or
-```
-$ git clone <this_repository>
-$ cd /path/to/rdf
-$ ./run.sh test
+$ cd datc_robust_design_flow
+$ ./run.sh simple
 ```
 which runs logic synthesis, placement, gate sizing, and global router with 
-a few test designs.
-The result of each stage can be found under the stage's directory, like
+a simple test case.
+The result of each stage can be found under the stage's directory, e.g.,
 ```
 ./100_logic_synthesis/synthesis
 ./200_floorplanning/bookshelf
 ./300_placement/placement
 ./400_gate_sizing/sizing
 ./510_global_route/global_route
+./610_detail_route/detail_route
 ```
 
 Every stage has the main run script (**`run_suite`**). The configuration of design flow
@@ -74,7 +71,7 @@ can be customized using the configuration script located at `000_config`. We can
 specify logic synthesis scenario, utilization of chip floorplan, placer, gate 
 sizer, as well as global router. You can find an example flow configuration at:
 ```
-./000_config/config.sh
+./000_config/config_simple.sh
 ```
 
 ## Benchmarks
@@ -151,6 +148,11 @@ tile_size=30
 num_layer=6
 adjustment=10
 safety=90
+
+# Detailed Routing
+detail_routers=(
+    "NCTUdr"
+)
 ```
 
 ## Logic Synthesis
@@ -232,6 +234,13 @@ global_route/<benchmark>.<scenario>.<placer>.<router>/<benchmark>.Max_H.congesti
 global_route/<benchmark>.<scenario>.<placer>.<router>/<benchmark>.Max_V.congestion.png
 ```
 
+## Detail Routing
+In RDF, global routing and detailed routing read input files based on ISPD 2008 Global Routing Contest and ISPD 2018 Initial Detailed Routing Contest, respectively. 
+Since there is no industrial standard format for connecting global routing and detailed routing, we develop a global routing guide translator to translate the output format of ISPD 2008 Global Routing Contest into the input format of routing guide used in ISPD 2018 Initial Detailed Routing Contest. 
+In ISPD 2018 Contest, a group of design rules and routing preference metrics are defined and stored in LEF/DEF files. 
+As in commercial routers, the output of a detailed router follows DEF format that can be read by any commercial layout tools.
+
+Currently, `NCTUdr` is included, and more tools from winning teams will be included.
 
 ## Gate Sizing Flow
 To turn on the gate sizing flow, you need to set the **`run_gs`** flag in your 
@@ -246,21 +255,19 @@ It can also be executed by run_suite scripts, inside the following directories:
 
 
 ## References
-Jinwook Jung, Iris Hui-Ru Jiang, Gi-Joon Nam, Victor N. Kravets, Laleh Behjat, and Yin-Lang Li, 
-"OpenDesign flow database: the infrastructure for VLSI design and design automation research," in Proceedings of the 35th International Conference on Computer-Aided Design (ICCAD '16). 
-DOI: https://doi.org/10.1145/2966986.2980074
+* Jinwook Jung, Iris Hui-Ru Jiang, Gi-Joon Nam, Victor N. Kravets, Laleh Behjat, and Yin-Lang Li, "OpenDesign flow database: the infrastructure for VLSI design and design automation research," in Proceedings of the 35th International Conference on Computer-Aided Design (ICCAD '16). (DOI: https://doi.org/10.1145/2966986.2980074)
+* Jinwook Jung, Iris Hui-Ru Jiang, Jianli Chen, Shih-Ting Lin, Yih-Lang Li, Victor N. Kravets, and Gi-Joon Nam, "DATC RDF: An Open Design Flow from Logic Synthesis to Detailed Routing," in Proceedings of 2018 Workshop on Open-Source EDA Technology ([Link to arxiv.org](https://arxiv.org/abs/1810.01078)).
 
 
 ## Authors
 * Iris Hui-Ru Jiang - National Taiwan University
-* Victor N. Kravets - IBM Thomas J. Watson Research Center
 * Jianli Chen - Fuzhou University
-* Yih-Lang Li - National Chiao Tung University
 * [Jinwook Jung](mailto:jinwookjungs@gmail.com) - [KAIST](http://dtlab.kaist.ac.kr)
+* Victor N. Kravets - IBM Thomas J. Watson Research Center
+* Shih-Ting Lin - National Chiao Tung University
+* Yih-Lang Li - National Chiao Tung University
 * Gi-Joon Nam - IBM Thomas J. Watson Research Center
-
 
 ## Former Contributers
 * Laleh Behjat - University of Calgary
-* Nima Karimpour Darav - University of Calgray
 
