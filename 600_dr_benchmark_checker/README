@@ -1,0 +1,30 @@
+# Written by Shih-Ting Lin (cxzasd3661512@gmail.com) on 2018/07
+Advisor :  Prof. Yih-Lang Li
+Department of Computer Science, 
+National Chiao Tung University, Taiwan.
+# usage: ./DR_benchmark_checker -lef [lef_file] -def [def_file] -lef_out [final_lef_file] -def_out [final_def_file]
+# version : 1.0
+
+== FILE_LIST == 
+DR_benchmark_checker
+README
+
+1. Introduction:
+	This program is used for LEF/DEF checking and remaking. 
+    To generate a LEF/DEF input for detailed router in ISPD'18 contest. 
+    In ISPD’18 contest, there are several design rules and routing preference metrics. 
+    Therefore, the information in LEF/DEF file have to be more detailed than previous stages to apply complete design rules and routing preference metrics mentioned in the contest.
+2. Modified Item:
+	DEF:
+		TRACKS
+	LEF:
+		VIA LAYER
+		VIA TYPE
+		SPACING TABLE
+		ENDOFLINE
+		CUT SPACING
+3. Future Version:
+	The modified items in current version are not flexable. For next version, we will set the default mode and customer mode for users. In the customer mode, user is able to set there own item information.
+
+
+If the program crash on the unkown situation, please contact Shih-Ting Lin (cxzasd3661512@gmail.com) for further information.

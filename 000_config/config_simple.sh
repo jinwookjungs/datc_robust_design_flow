@@ -7,7 +7,9 @@ bench_suite=(
 
 # Logic Synthesis
 synth_scenarios=(
+    "resyn2"
     "resyn"
+    "timing"
 )
 max_fanout=16
 
@@ -34,8 +36,14 @@ sizers=(
 
 # Global Routing
 global_routers=("NCTUgr")
+
 tile_size=50
 num_layer=4
 adjustment=10
 safety=90
+
+# Detailed Routing
+detail_routers=(
+    "NCTUdr"
+)
 

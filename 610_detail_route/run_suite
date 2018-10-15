@@ -1,0 +1,40 @@
+#!/bin/bash
+# possible calls: run_suite [my_suite|tau|test]
+
+source ../000_config/setup.sh $1
+
+for bench in "${these_benches[@]}"
+do
+	for scenario in "${these_scenarios[@]}"
+	do
+        for placer in "${these_placers[@]}"
+        do
+            for sizer in "${these_sizers[@]}"
+            do
+                for grouter in "${these_grouters[@]}"
+                do
+                    for drouter in "${these_drouters[@]}"
+                    do
+                        if test $run_gs = false; then
+                            base_name=${bench}.${scenario}.${placer}
+                        else
+                            base_name=${bench}.${scenario}.${placer}.${sizer}
+                        fi
+
+                        out_dir="detail_route/${base_name}.${drouter}"
+                        if [ -d $out_dir ]; then
+                            rm -rf ${out_dir}
+                        fi
+                        mkdir $out_dir
+
+                        lef="${dr_lefdef_dir}/${base_name}/final.lef"
+                        def="${dr_lefdef_dir}/${base_name}/${bench}.def"
+                        guide="${global_route_dir}/${base_name}.${grouter}/${bench}.gr_guide"
+
+                        ./run_droute.sh ${drouter} ${lef} ${def} ${guide} ${out_dir}/${bench}.def
+                    done
+                done
+            done
+        done
+    done
+done

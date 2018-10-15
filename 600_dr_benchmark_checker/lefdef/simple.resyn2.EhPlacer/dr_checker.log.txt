@@ -1,0 +1,227 @@
+===============================<< LEF/DEF REVISION >>==================================
+| Member: Shih-Ting Lin                                                               |
+| Advisor: Yih-Lang Li                                                                |
+| Affiliation: Department of Computer Science, National Chiao Tung University         |
+===============================<< LEF/DEF REVISION >>==================================
+Start Parsing LEF/DEF...
+Start Lef main
+Start Def main
+Checking Track Information in DEF file...
+	WARNING:: No Track information in /home/jwjung/github/datc_robust_design_flow/310_write_def/def/simple.resyn2.EhPlacer/simple.def
+	Generating Virtual Track set.....
+	Die_Area : LB(0.00,0.00) RT(76760.00,78660.00)
+	TRACKS X 0 DO 202 STEP 380 LAYER metal1 ;
+	TRACKS Y 0 DO 202 STEP 380 LAYER metal1 ;
+	TRACKS X 0 DO 202 STEP 380 LAYER metal2 ;
+	TRACKS Y 0 DO 202 STEP 380 LAYER metal2 ;
+	TRACKS X 0 DO 202 STEP 380 LAYER metal3 ;
+	TRACKS Y 0 DO 202 STEP 380 LAYER metal3 ;
+	TRACKS X 0 DO 134 STEP 570 LAYER metal4 ;
+	TRACKS Y 0 DO 134 STEP 570 LAYER metal4 ;
+	TRACKS X 0 DO 134 STEP 570 LAYER metal5 ;
+	TRACKS Y 0 DO 134 STEP 570 LAYER metal5 ;
+	TRACKS X 0 DO 134 STEP 570 LAYER metal6 ;
+	TRACKS Y 0 DO 134 STEP 570 LAYER metal6 ;
+	TRACKS X 0 DO 101 STEP 760 LAYER metal7 ;
+	TRACKS Y 0 DO 101 STEP 760 LAYER metal7 ;
+	TRACKS X 0 DO 101 STEP 760 LAYER metal8 ;
+	TRACKS Y 0 DO 101 STEP 760 LAYER metal8 ;
+	TRACKS X 0 DO 101 STEP 760 LAYER metal9 ;
+	TRACKS Y 0 DO 101 STEP 760 LAYER metal9 ;
+Virtual Track set in DEF Generation Complete
+Information in DEF file is fine for detailed router now!
+Checking Layer Information in LEF file...
+	Checking Metal Layer metal1
+	WARNING:: metal1 does not contain the SpacingTable information
+	Generating Virtual SpacingTable for metal1....
+  SPACINGTABLE
+	PARALLELRUNLENGTH 0
+	PARALLELRUNLENGTH 0
+	WIDTH 0    0.06 
+	WIDTH 0.1  0.1 
+	WIDTH 0.75 0.25 
+	WIDTH 1.5  0.45 ; 
+	WARNING:: metal1 does not contain the ENDOFLINE information
+	Generating Virtual ENDOFLINE for metal1....
+  SPACING 0.09 ENDOFLINE 0.09 WITHIN 0.025 ;
+	Metal Layer metal1 Checking Complete
+	WARNING:: No Via Layer between metal2 and metal1
+	Generating Virtual Via Layer ...
+LAYER VIA1
+  TYPE CUT ;
+  SPACING 0.07 ;
+  WIDTH 0.07 ;
+END VIA1
+
+	Checking Metal Layer metal2
+	WARNING:: metal2 does not contain the SpacingTable information
+	Generating Virtual SpacingTable for metal2....
+  SPACINGTABLE
+	PARALLELRUNLENGTH 0
+	PARALLELRUNLENGTH 0
+	WIDTH 0    0.06 
+	WIDTH 0.1  0.1 
+	WIDTH 0.75 0.25 
+	WIDTH 1.5  0.45 ; 
+	WARNING:: metal2 does not contain the ENDOFLINE information
+	Generating Virtual ENDOFLINE for metal2....
+  SPACING 0.09 ENDOFLINE 0.09 WITHIN 0.025 ;
+	Metal Layer metal2 Checking Complete
+	WARNING:: No Via Layer between metal3 and metal2
+	Generating Virtual Via Layer ...
+LAYER VIA2
+  TYPE CUT ;
+  SPACING 0.07 ;
+  WIDTH 0.07 ;
+END VIA2
+
+	Checking Metal Layer metal3
+	WARNING:: metal3 does not contain the SpacingTable information
+	Generating Virtual SpacingTable for metal3....
+  SPACINGTABLE
+	PARALLELRUNLENGTH 0
+	PARALLELRUNLENGTH 0
+	WIDTH 0    0.06 
+	WIDTH 0.1  0.1 
+	WIDTH 0.75 0.25 
+	WIDTH 1.5  0.45 ; 
+	WARNING:: metal3 does not contain the ENDOFLINE information
+	Generating Virtual ENDOFLINE for metal3....
+  SPACING 0.09 ENDOFLINE 0.09 WITHIN 0.025 ;
+	Metal Layer metal3 Checking Complete
+	WARNING:: No Via Layer between metal4 and metal3
+	Generating Virtual Via Layer ...
+LAYER VIA3
+  TYPE CUT ;
+  SPACING 0.07 ;
+  WIDTH 0.07 ;
+END VIA3
+
+	Checking Metal Layer metal4
+	WARNING:: metal4 does not contain the SpacingTable information
+	Generating Virtual SpacingTable for metal4....
+  SPACINGTABLE
+	PARALLELRUNLENGTH 0
+	PARALLELRUNLENGTH 0
+	WIDTH 0    0.06 
+	WIDTH 0.1  0.1 
+	WIDTH 0.75 0.25 
+	WIDTH 1.5  0.45 ; 
+	WARNING:: metal4 does not contain the ENDOFLINE information
+	Generating Virtual ENDOFLINE for metal4....
+  SPACING 0.09 ENDOFLINE 0.09 WITHIN 0.025 ;
+	Metal Layer metal4 Checking Complete
+	WARNING:: No Via Layer between metal5 and metal4
+	Generating Virtual Via Layer ...
+LAYER VIA4
+  TYPE CUT ;
+  SPACING 0.07 ;
+  WIDTH 0.07 ;
+END VIA4
+
+	Checking Metal Layer metal5
+	WARNING:: metal5 does not contain the SpacingTable information
+	Generating Virtual SpacingTable for metal5....
+  SPACINGTABLE
+	PARALLELRUNLENGTH 0
+	PARALLELRUNLENGTH 0
+	WIDTH 0    0.06 
+	WIDTH 0.1  0.1 
+	WIDTH 0.75 0.25 
+	WIDTH 1.5  0.45 ; 
+	WARNING:: metal5 does not contain the ENDOFLINE information
+	Generating Virtual ENDOFLINE for metal5....
+  SPACING 0.09 ENDOFLINE 0.09 WITHIN 0.025 ;
+	Metal Layer metal5 Checking Complete
+	WARNING:: No Via Layer between metal6 and metal5
+	Generating Virtual Via Layer ...
+LAYER VIA5
+  TYPE CUT ;
+  SPACING 0.07 ;
+  WIDTH 0.07 ;
+END VIA5
+
+	Checking Metal Layer metal6
+	WARNING:: metal6 does not contain the SpacingTable information
+	Generating Virtual SpacingTable for metal6....
+  SPACINGTABLE
+	PARALLELRUNLENGTH 0
+	PARALLELRUNLENGTH 0
+	WIDTH 0    0.06 
+	WIDTH 0.1  0.1 
+	WIDTH 0.75 0.25 
+	WIDTH 1.5  0.45 ; 
+	WARNING:: metal6 does not contain the ENDOFLINE information
+	Generating Virtual ENDOFLINE for metal6....
+  SPACING 0.09 ENDOFLINE 0.09 WITHIN 0.025 ;
+	Metal Layer metal6 Checking Complete
+	WARNING:: No Via Layer between metal7 and metal6
+	Generating Virtual Via Layer ...
+LAYER VIA6
+  TYPE CUT ;
+  SPACING 0.07 ;
+  WIDTH 0.07 ;
+END VIA6
+
+	Checking Metal Layer metal7
+	WARNING:: metal7 does not contain the SpacingTable information
+	Generating Virtual SpacingTable for metal7....
+  SPACINGTABLE
+	PARALLELRUNLENGTH 0
+	PARALLELRUNLENGTH 0
+	WIDTH 0    0.06 
+	WIDTH 0.1  0.1 
+	WIDTH 0.75 0.25 
+	WIDTH 1.5  0.45 ; 
+	WARNING:: metal7 does not contain the ENDOFLINE information
+	Generating Virtual ENDOFLINE for metal7....
+  SPACING 0.09 ENDOFLINE 0.09 WITHIN 0.025 ;
+	Metal Layer metal7 Checking Complete
+	WARNING:: No Via Layer between metal8 and metal7
+	Generating Virtual Via Layer ...
+LAYER VIA7
+  TYPE CUT ;
+  SPACING 0.07 ;
+  WIDTH 0.07 ;
+END VIA7
+
+	Checking Metal Layer metal8
+	WARNING:: metal8 does not contain the SpacingTable information
+	Generating Virtual SpacingTable for metal8....
+  SPACINGTABLE
+	PARALLELRUNLENGTH 0
+	PARALLELRUNLENGTH 0
+	WIDTH 0    0.06 
+	WIDTH 0.1  0.1 
+	WIDTH 0.75 0.25 
+	WIDTH 1.5  0.45 ; 
+	WARNING:: metal8 does not contain the ENDOFLINE information
+	Generating Virtual ENDOFLINE for metal8....
+  SPACING 0.09 ENDOFLINE 0.09 WITHIN 0.025 ;
+	Metal Layer metal8 Checking Complete
+	WARNING:: No Via Layer between metal9 and metal8
+	Generating Virtual Via Layer ...
+LAYER VIA8
+  TYPE CUT ;
+  SPACING 0.07 ;
+  WIDTH 0.07 ;
+END VIA8
+
+	Checking Metal Layer metal9
+	WARNING:: metal9 does not contain the SpacingTable information
+	Generating Virtual SpacingTable for metal9....
+  SPACINGTABLE
+	PARALLELRUNLENGTH 0
+	PARALLELRUNLENGTH 0
+	WIDTH 0    0.06 
+	WIDTH 0.1  0.1 
+	WIDTH 0.75 0.25 
+	WIDTH 1.5  0.45 ; 
+	WARNING:: metal9 does not contain the ENDOFLINE information
+	Generating Virtual ENDOFLINE for metal9....
+  SPACING 0.09 ENDOFLINE 0.09 WITHIN 0.025 ;
+	Metal Layer metal9 Checking Complete
+design.Via_list.size() 0
+	WARNING:: ../benchmarks/libs/open_design_flow.lef file does not contain the Via type information
+	Generating Virtual Via type....
+Information in LEF file is fine for detailed router now!
