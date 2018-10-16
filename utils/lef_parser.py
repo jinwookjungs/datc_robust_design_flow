@@ -115,7 +115,6 @@ class Lef(object):
 
         while True:
             line = next(lines_iter)
-            print(line)
             tokens = line.split()
             if tokens[0] == 'END':
                 try:
