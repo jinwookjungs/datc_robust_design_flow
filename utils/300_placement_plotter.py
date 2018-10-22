@@ -46,7 +46,7 @@ def parse_bookshelf_nodes(nodes, node_dict):
         tokens = l.split()
         if tokens[0] == 'NumNodes' or tokens[0] == 'NumTerminals':
             continue
-       
+
         assert len(tokens) >= 3
         name, w, h = tokens[0], int(tokens[1]), int(tokens[2])
 
@@ -111,7 +111,7 @@ def parse_bookshelf_scl(scl):
 
                 elif tokens[0] == 'Sitespacing':
                     site_spacing = int(tokens[2])
-                
+
                 elif tokens[0] == 'SubrowOrigin':
                     subrow_origin = int(tokens[2])
                     num_sites = int(tokens[5])
@@ -127,7 +127,7 @@ def parse_bookshelf_scl(scl):
 
 def print_gnuplot_header(f_dest, png_name):
     def get_plot_size(default_size=1500):
-        aspect_ratio = PlaceRegion.ury / PlaceRegion.urx
+        aspect_ratio = float(PlaceRegion.ury) / PlaceRegion.urx
 
         if aspect_ratio < 1.0:
             x_size = default_size
@@ -137,7 +137,7 @@ def print_gnuplot_header(f_dest, png_name):
             y_size = default_size
 
         return x_size, y_size
-            
+
 
     x_size, y_size = get_plot_size()
 
@@ -162,7 +162,7 @@ def print_gnuplot_header(f_dest, png_name):
     #f_dest.write("color_list=\"#001848 #3090F0 #000000 \"\n")
     f_dest.write("color_list=\"#0B66FE #FF0000 #000000 \"\n")
     f_dest.write("num2col(n)=word(color_list,n)\n")
-        
+
     f_dest.write("set xrange[0:%d]\n" % (PlaceRegion.urx + 0))
     f_dest.write("set yrange[0:%d]\n" % (PlaceRegion.ury + 0))
     f_dest.write("set multiplot\n\n")
@@ -175,7 +175,7 @@ def draw_nodes(f_dest, node_list, color_num, solid):
     [f_dest.write(n.draw_gnuplot()) for n in node_list]
     f_dest.write("EOF\n")
     f_dest.write("# num_nodes: %d\n\n\n" % (len(node_list)))
-           
+
 
 def make_placement_plot(nodes, pl, scl, dest):
     # Read bookshelf files
@@ -184,7 +184,7 @@ def make_placement_plot(nodes, pl, scl, dest):
     node_dict = dict()
     parse_bookshelf_nodes(nodes, node_dict)
     parse_bookshelf_pl(pl, node_dict)
-    
+
     # open plot file
     f_dest = open(dest + '.plt', 'w')
     png_name = dest + '.png'
