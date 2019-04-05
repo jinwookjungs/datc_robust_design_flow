@@ -505,7 +505,10 @@ class Module(object):
         for edge in dangling:
             if edge.owner.__class__ == Wire:
                 # Owner is a wire
-                if edge.source.owner.gate_type == LATCH:
+                if edge.source == None and len(edge.sink_dict) == 0:
+                    pass
+                
+                elif edge.source.owner.gate_type == LATCH:
                     dangling_lo.append(edge.name)
 
                     # Remove the wire
