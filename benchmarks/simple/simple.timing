@@ -1,1 +1,8 @@
 clock clk 7200 50
+clock clk 7200 50
+at inp1 0 0 0 0
+at inp2 0 0 0 0
+slew inp1 0 0 0 0
+slew inp2 0 0 0 0
+rat out 0 0 0 0
+load out 4.0
