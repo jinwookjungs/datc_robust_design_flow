@@ -16,12 +16,12 @@ utilization=0.6
 
 # Placement
 placers=(
-    "NTUPlace3"
+    "EhPlacer"
 )
 target_density=0.8
 
 # Gate Sizing
-run_gs=true
+run_gs=false
 sizers=(
     "USizer2013"
 )
@@ -32,4 +32,9 @@ tile_size=50
 num_layer=4
 adjustment=10
 safety=90
+
+# Detailed Routing
+detail_routers=(
+#    "NCTUdr"
+)
 

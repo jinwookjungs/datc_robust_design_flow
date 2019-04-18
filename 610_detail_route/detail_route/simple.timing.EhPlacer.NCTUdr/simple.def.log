@@ -1,77 +1,0 @@
-==================================<< NCTUdr >>=====================================
-= Member: Shih-Ting Lin, Ming-Jie Fong, Ching-Hsi Chen, Wei-Ren Lai, He-Cheng Tsai=
-= Advisor: Yih-Lang Li                                                            =
-= Affiliation: Department of Computer Science, National Chiao Tung University     =
-==================================<< NCTUdr >>=====================================
-Start Parsing LEF/DEF...
-Start Lef main
-Start Def main
-ISPD_Construct_Netlist_Information
-Distribute_Track_list
-Lef/Def Parser Time Cost : 0.00 sec
-Start Guide Parser
-ERROR::GuideParser : Number of guides incorrect 1 of 7
-GuideParser::GCell_width = 0, GCell_height = 0
-GuideParser::GCell_Original_x = 0, GCell_Original_y = 0
-Guide Parser Time Cost : 0.00 sec
-IRoute_Generator::Build_Whole_Design...
-IRoute_Generator::BuildGuideConnection...
-IRoute_Generator::InitialPanelList...
------iroute = 0-----
------bigpoint = 0-----
------unitpoint = 0-----
------bothzerocnt = 0-----
------zerocnt = 0-----
------layerviolation = 0-----
------notmultiplegcell = 0-----
------total = 0-----
------small_h = 0-----
------small_v = 0-----
------small = 0-----
-========== Grid-Map Construction ==========
-	Construct GridMap...
-Metal(1): GridMap( 303 x 303 )
-Metal(2): GridMap( 303 x 303 )
-Metal(3): GridMap( 303 x 404 )
-Metal(4): GridMap( 404 x 202 )
-Metal(5): GridMap( 202 x 202 )
-Metal(6): GridMap( 302 x 202 )
-Metal(7): GridMap( 151 x 302 )
-Metal(8): GridMap( 151 x 151 )
-Metal(9): GridMap( 151 x 151 )
-	real_coor_table memory : 17960 bytes
-	connection_table memory : 35920 bytes
-	ViaBridge connection...
-========== Preprocessing ==========
-	Construct Spacing Table...
-	ViaTypeList Construction...
-	SpaceEvaluationGraph Construction...
-	Blockage_array Initialization...
-	Set All PinShapes On Layout...
-	Set All Shapes To Blockage...
-	Set All IRoutes To Blockage...
-	Net Construction...
-***********Routing Information*************
-Layout Width : 76760 Layout Height : 78660 
-Metal Layer Num : 9
-
-========== Start Routing Info Initialization ==========
-
-Line-end Routing Mode = false
-nX Routing Mode = false
-SmallRouter::Two_pin_nets_ Assignment - Two Pin Net Num 8 
-SmallRouter::Init setting 
-
-========== Start Routing ==========
-
-ISPD_StartRouting:: ISPD Congestion Map Setting
-ISPD_StartRouting:: ISPD NetID Map Setting
-ISPD_StartRouting:: Congestion Map Estimation Based Routing...
-ISPD_StartRouting:: Congestion Map Estimation Based Routing Execute Successfully
-ISPD_StartRouting:: ISPD NetID Map Setting
-ISPD_StartRouting:: ISPD 2PinNet Status Setting
-ISPD_StartRouting:: Initial Routing 
-Routing n3 (0/8)...Routing n3 (1/8)...Routing n10_1 (2/8)...Routing n10 (3/8)...Routing n9 (4/8)...Routing inp1 (5/8)...Routing inp2 (6/8)...Routing out (7/8)...Route(8/8)
-ISPD_StartRouting:: Free Memory
-Routing Time Cost : 0.04 sec
-NCTUdr Execution completed

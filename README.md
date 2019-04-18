@@ -14,7 +14,7 @@ Additional contests are planned for upcoming conferences. These are interesting
 and important events that stimulate the research of the target problems and 
 advance the cutting edge technologies. Nevertheless, most contests focus only 
 on the point tool problems and fail in addressing the design flow or 
-co-optimization among design tools. OpenDesign Flow Database platform is 
+co-optimization among design tools. DATC RDF platform is 
 developed to direct attention to the overall design flow from logic design to 
 physical synthesis to manufacturability optimization. The goals are to provide:
 1. An academic reference design flow based on past CAD contest results, 
@@ -24,7 +24,7 @@ composing point tool libraries.
 
 
 ## Getting Started
-OpenDesign Flow Database consists of the following directory structure:
+DATC RDF consists of the following directory structure:
 
     Flow configuration:   ./000_config
     Logic synthesis:      ./100_logic_synthesis
@@ -52,7 +52,7 @@ To give a first shot, please try runnning:
 $ cd /path/to/your/workspace
 $ git clone <this_repository>
 $ cd datc_robust_design_flow
-$ ./run.sh simple
+$ ./run.sh my_suite
 ```
 which runs logic synthesis, placement, gate sizing, and global router with 
 a simple test case.
@@ -75,11 +75,11 @@ sizer, as well as global router. You can find an example flow configuration at:
 ```
 
 ## Benchmarks
-OpenDesign Flow Database 2017 has 26 benchmark circuits that are taken from  
+DATC RDF has 26 benchmark circuits that are taken from  
 [TAU Contest 2017](https://sites.google.com/site/taucontest2017/).
 Since TAU Contest 2017 did not release complete Liberty library, we remapped
 the benchmark circuits into our own technology library.
-The standard cell library of OpenDesign Flow Database is based on the library of
+The standard cell library of DATC RDF is based on the library of
 ISPD'12/13 Gate Sizing Contest.
 We took the LEF file from A2A methodology of UCSD (almost the same LEF file used
 in ICCAD’15 TDP contest). Please refer to the paper for more details: 
@@ -103,7 +103,7 @@ $ sudo pip install requests
 ```
 
 ## Flow configuration
-You can configure the OpenDesign Flow Database with your preferred logic 
+You can configure the DATC RDF Database with your preferred logic 
 synthesis scenarios, placers, timers, and global routers.
 An example flow configuration is shown below:
 ```shell

@@ -8,19 +8,17 @@ bench_suite=(
 # Logic Synthesis
 synth_scenarios=(
     "resyn2"
-    "resyn"
-    "timing"
 )
 max_fanout=16
 
 # Floorplanning
-utilization=0.01
+utilization=0.05
 
 # Placement
 placers=(
     "EhPlacer"
 )
-target_density=0.1
+target_density=0.2
 
 # Timer
 timers=(

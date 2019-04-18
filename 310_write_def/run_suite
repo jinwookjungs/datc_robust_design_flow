@@ -12,7 +12,7 @@ do
         do
             aux="${floorplan_dir}/bookshelf-${bench}.${scenario}/${bench}.aux"
 
-            pl=${bench}.${scenario}.${placer}.pl
+            pl=${bench}.solution.pl
 
             lef="${bench_dir}/${bench}/${bench}.lef"
             final_verilog="${final_verilog_dir}/${bench}.${scenario}/${bench}.v"
