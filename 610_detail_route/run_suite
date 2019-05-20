@@ -31,7 +31,9 @@ do
                         def="${dr_lefdef_dir}/${base_name}/${bench}.def"
                         guide="${global_route_dir}/${base_name}.${grouter}/${bench}.gr_guide"
 
-                        ./run_droute.sh ${drouter} ${lef} ${def} ${guide} ${out_dir}/${bench}.def
+                        cmd="./run_droute.sh ${drouter} ${lef} ${def} ${guide} ${out_dir}/${bench}.def"
+                        echo $cmd
+                        $cmd
                     done
                 done
             done

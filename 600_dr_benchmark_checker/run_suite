@@ -27,9 +27,10 @@ do
                 fi
                 mkdir -p $out_dir
 
-                ../bin/NCTU-DR/DR_benchmark_checker -lef $lef_name -def $def_name \
-                                                    -lef_out ${out_dir}/final.lef -def_out ${out_dir}/${bench}.def \
-                | tee ${out_dir}/dr_checker.log.txt
+                cmd="../bin/NCTU-DR/DR_benchmark_checker -lef $lef_name -def $def_name"
+                cmd="$cmd -lef_out ${out_dir}/final.lef -def_out ${out_dir}/${bench}.def"
+                echo $cmd
+                $cmd | tee ${out_dir}/dr_checker.log.txt
             done
         done
     done

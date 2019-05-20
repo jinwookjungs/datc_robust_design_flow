@@ -35,6 +35,6 @@ safety=90
 
 # Detailed Routing
 detail_routers=(
-#    "NCTUdr"
+    "NCTUdr"
 )
 
