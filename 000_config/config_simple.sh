@@ -12,7 +12,7 @@ synth_scenarios=(
 max_fanout=16
 
 # Floorplanning
-utilization=0.05
+utilization=0.10
 
 # Placement
 placers=(

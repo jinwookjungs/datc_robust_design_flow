@@ -2,7 +2,7 @@
 
 # Benchmarks
 bench_suite=(
-    "cordic_ispd"
+    "ac97_ctrl"
 )
 
 # Logic Synthesis

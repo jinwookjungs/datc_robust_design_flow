@@ -33,7 +33,7 @@ do
                 $cmd | tee ${out_dir}/dr_checker.log.txt
 
                 # FIXME: -def_out argument doesn't work.
-                mv c_ispd.def $out_dir/${bench}.def
+                mv *.def $out_dir/${bench}.def
             done
         done
     done
