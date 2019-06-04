@@ -28,12 +28,13 @@ do
                 mkdir -p $out_dir
 
                 cmd="../bin/NCTU-DR/DR_benchmark_checker -lef $lef_name -def $def_name"
-                cmd="$cmd -lef_out ${out_dir}/final.lef -def_out ${out_dir}/${bench}.def"
+                cmd="$cmd -lef_out final.lef -def_out final.def"
                 echo $cmd
                 $cmd | tee ${out_dir}/dr_checker.log.txt
 
-                # FIXME: -def_out argument doesn't work.
-                mv *.def $out_dir/${bench}.def
+                # FIXME: -def_out argument doesn't work properly.
+                mv final.lef $out_dir/final.lef
+                mv .def $out_dir/${bench}.def
             done
         done
     done
