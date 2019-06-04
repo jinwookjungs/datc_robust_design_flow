@@ -1,6 +1,7 @@
 *.swp
 **/__pycache__
 **/*.pyc
+**/core*
 bin/unlicensed/placer
 bin/unlicensed/router
 bin/unlicensed/sizer

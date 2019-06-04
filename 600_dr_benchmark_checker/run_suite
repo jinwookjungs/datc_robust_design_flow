@@ -31,6 +31,9 @@ do
                 cmd="$cmd -lef_out ${out_dir}/final.lef -def_out ${out_dir}/${bench}.def"
                 echo $cmd
                 $cmd | tee ${out_dir}/dr_checker.log.txt
+
+                # FIXME: -def_out argument doesn't work.
+                mv c_ispd.def $out_dir/${bench}.def
             done
         done
     done
