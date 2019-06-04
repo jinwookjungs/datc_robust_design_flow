@@ -252,8 +252,8 @@ It can also be executed by run_suite scripts, inside the following directories:
 
 
 ## References
-* Jinwook Jung, Iris Hui-Ru Jiang, Gi-Joon Nam, Victor N. Kravets, Laleh Behjat, and Yin-Lang Li, "OpenDesign flow database: the infrastructure for VLSI design and design automation research," in Proceedings of the 35th International Conference on Computer-Aided Design (ICCAD '16). (DOI: https://doi.org/10.1145/2966986.2980074)
-* Jinwook Jung, Iris Hui-Ru Jiang, Jianli Chen, Shih-Ting Lin, Yih-Lang Li, Victor N. Kravets, and Gi-Joon Nam, "DATC RDF: An Open Design Flow from Logic Synthesis to Detailed Routing," in Proceedings of 2018 Workshop on Open-Source EDA Technology ([Link to arxiv.org](https://arxiv.org/abs/1810.01078)).
+1. Jinwook Jung, Iris Hui-Ru Jiang, Jianli Chen, Shih-Ting Lin, Yih-Lang Li, Victor N. Kravets, and Gi-Joon Nam, "DATC RDF: An Open Design Flow from Logic Synthesis to Detailed Routing," in Proceedings of 2018 Workshop on Open-Source EDA Technology ([Link to arxiv.org](https://arxiv.org/abs/1810.01078)).
+1. Jinwook Jung, Iris Hui-Ru Jiang, Gi-Joon Nam, Victor N. Kravets, Laleh Behjat, and Yin-Lang Li, "OpenDesign flow database: the infrastructure for VLSI design and design automation research," in Proceedings of the 35th International Conference on Computer-Aided Design (ICCAD '16). (DOI: https://doi.org/10.1145/2966986.2980074)
 
 
 ## Authors
