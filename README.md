@@ -259,10 +259,10 @@ It can also be executed by run_suite scripts, inside the following directories:
 ## Authors
 * Iris Hui-Ru Jiang - National Taiwan University
 * Jianli Chen - Fuzhou University
-* [Jinwook Jung](mailto:jinwookjungs@gmail.com) - [KAIST](http://dtlab.kaist.ac.kr)
+* [Jinwook Jung](mailto:jinwookjungs@gmail.com) - IBM Thomas J. Watson Research Center
 * Victor N. Kravets - IBM Thomas J. Watson Research Center
-* Shih-Ting Lin - National Chiao Tung University
 * Yih-Lang Li - National Chiao Tung University
+* Shih-Ting Lin - National Chiao Tung University
 * Gi-Joon Nam - IBM Thomas J. Watson Research Center
 
 ## Former Contributers
