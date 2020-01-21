@@ -1,7 +1,7 @@
 # DATC Robust Design Flow
 
 ## Notes
-We are currently **not** providing the individual point tool binaries.
+Please visit new repository: https://github.com/ieee-ceda-datc/RDF-2019
 
 ## Introduction
 In recent years, there has been a slew of design automation contests and 
